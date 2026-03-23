@@ -1,0 +1,16 @@
+using NotificationWorker.Application.Contracts;
+using NotificationWorker.Application.Services;
+
+namespace NotificationWorker.Application.Extensions;
+
+public static class InjectionsExtensions
+{
+    public static IServiceCollection AddDependencyInjections(this IServiceCollection services)
+    {
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IEmailDispatcher, EmailDispatcher>();
+        services.AddSingleton<ITemplateRenderer, RazorTemplateRenderer>();
+
+        return services;
+    }
+}

@@ -9,12 +9,14 @@ public class RazorTemplateRenderer : ITemplateRenderer
 
     public RazorTemplateRenderer()
     {
-        _engine = new RazorLightEngineBuilder().UseEmbeddedResourcesProject(typeof(RazorTemplateRenderer))
-            .UseMemoryCachingProvider().Build();
+        _engine = new RazorLightEngineBuilder()
+            .UseFileSystemProject(Path.Combine(Directory.GetCurrentDirectory(), "Infrastructure/Templates"))
+            .UseMemoryCachingProvider()
+            .Build();
     }
-    
+
     public Task<string> RenderAsync(string template, object model)
     {
-        return _engine.CompileRenderAsync(template, model);
+        return _engine.CompileRenderAsync($"{template}.cshtml", model);
     }
 }

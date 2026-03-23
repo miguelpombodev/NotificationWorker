@@ -6,28 +6,26 @@ namespace NotificationWorker.Application.Services;
 
 public class NotificationService : INotificationService
 {
-    private readonly ISender _emailSender;
-    private readonly ISender _smsSender;
+    private readonly IEmailDispatcher _emailDispatcher;
 
     public NotificationService(
-        ISender emailSender,
-        ISender smsSender)
+        IEmailDispatcher emailDispatcher
+    )
     {
-        _emailSender = emailSender;
-        _smsSender = smsSender;
+        _emailDispatcher = emailDispatcher;
     }
-    
+
     public async Task ProcessAsync(NotificationRequested notification)
     {
         switch (notification.Channel)
         {
             case NotificationChannel.Email:
-                await _emailSender.SendAsync(notification);
+                await _emailDispatcher.SendAsync(notification);
                 break;
-            
-            case NotificationChannel.Sms:
-                await _smsSender.SendAsync(notification);
-                break;
+
+            // case NotificationChannel.Sms:
+            //     await _smsSender.SendAsync(notification);
+            //     break;
         }
     }
 }

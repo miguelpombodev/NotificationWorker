@@ -1,30 +1,29 @@
-using MassTransit;
-using NotificationWorker;
-using NotificationWorker.Application.Contracts;
-using NotificationWorker.Application.Services;
+using NotificationWorker.Application.Extensions;
 using NotificationWorker.Domain.Models;
-using NotificationWorker.Infrastructure;
+using NotificationWorker.Infrastructure.Extensions;
 using Serilog;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-builder.Services.AddSerilog();
-builder.Services.Configure<RabbitMqOptions>(builder.Configuration.GetSection("RabbitMq"));
+var otelEndpoint = builder.Configuration["OpenTelemetry:Endpoint"]
+                   ?? "http://localhost:4317";
 
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumer<NotificationRequestedConsumer>();
-    x.UsingRabbitMq((ctx, cfg) =>
-    {
-        cfg.Host(builder.Configuration["RabbitMq:Host"]);
-        cfg.ConfigureEndpoints(ctx);
-    });
-});
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<ISender, EmailSender>();
+builder.Services.AddSerilogService(builder.Environment.EnvironmentName, otelEndpoint);
 
-builder.Services.AddSingleton<ITemplateRenderer, RazorTemplateRenderer>();
+builder.Services.AddOptions<RabbitMqOptions>().Bind(builder.Configuration.GetSection("RabbitMq"))
+    .ValidateDataAnnotations().ValidateOnStart();
+
+builder.Services.AddOpenTelemetryService(otelEndpoint);
+
+builder.Services.AddMassTransitService();
+
+builder.Services.AddDependencyInjections();
+builder.Services.AddAllHealthChecks();
 
 var host = builder.Build();
 host.Run();
