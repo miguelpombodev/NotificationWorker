@@ -1,5 +1,5 @@
 using NotificationWorker.Application.Extensions;
-using NotificationWorker.Domain.Models;
+using NotificationWorker.Domain.Models.Providers;
 using NotificationWorker.Infrastructure.Extensions;
 using Serilog;
 

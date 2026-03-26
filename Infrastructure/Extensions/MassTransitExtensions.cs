@@ -1,6 +1,6 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
-using NotificationWorker.Domain.Models;
+using NotificationWorker.Domain.Models.Providers;
 
 namespace NotificationWorker.Infrastructure.Extensions;
 
