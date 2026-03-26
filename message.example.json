@@ -1,5 +1,4 @@
 {
-  "messageId":"11111111-1111-1111-1111-111111111111",
   "messageType":[
     "urn:message:NotificationWorker.Domain.Models:NotificationRequested"
   ],
@@ -7,11 +6,13 @@
     "id":"22222222-2222-2222-2222-222222222222",
     "channel":0,
     "recipient":"user@email.com",
+    "project":"team_manager",
     "template":"welcome",
     "data":{
       "subject":"Welcome to Team Manager",
-      "username":"user",
-      "loginUrl":"https://google.com"
+      "name":"user",
+      "loginUrl":"https://google.com",
+      "role":"Developer"
     }
   }
 }
