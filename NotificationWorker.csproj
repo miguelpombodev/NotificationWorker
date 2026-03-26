@@ -36,5 +36,10 @@
         </Content>
 
         <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
+
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="10.21.0.135717">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 </Project>
