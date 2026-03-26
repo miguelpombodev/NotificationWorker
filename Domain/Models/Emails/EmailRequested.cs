@@ -1,4 +1,4 @@
-namespace NotificationWorker.Domain.Models;
+namespace NotificationWorker.Domain.Models.Emails;
 
 public class EmailRequested
 {

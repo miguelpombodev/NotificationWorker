@@ -1,33 +1,29 @@
 using System.Text;
 using MassTransit;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Models;
+using NotificationWorker.Domain.Models.Emails;
 using NotificationWorker.Infrastructure;
 using NotificationWorker.Infrastructure.Templates.TemplatesModels;
 using RabbitMQ.Client;
 
 namespace NotificationWorker.Application.Services;
 
-public class EmailDispatcher : IEmailDispatcher
+public class EmailDispatcher(ITemplateRenderer templateRenderer, ILogger<EmailDispatcher> logger)
+    : IEmailDispatcher
 {
-    private readonly ITemplateRenderer _templateRenderer;
-    private readonly ILogger<EmailDispatcher> _logger;
-
-    public EmailDispatcher(ITemplateRenderer templateRenderer, ILogger<EmailDispatcher> logger)
-    {
-        _templateRenderer = templateRenderer;
-        _logger = logger;
-    }
+    private readonly string _emailSenderExchange = "sub-email-sender-exchange";
+    private readonly string _emailSenderRk = "sub-email";
 
     public async Task SendAsync(NotificationRequested notification)
     {
         await RetryPolicies.EmailRetry.ExecuteAsync(async () =>
         {
             var model = MapTemplate(notification);
-            var body = await _templateRenderer.RenderAsync(notification.Template, model);
-
-            // send to email sender queue
+            var body = await templateRenderer.RenderAsync(notification.Template, model);
+            
             await SendEmail(notification.Recipient, body);
         });
     }
@@ -49,8 +45,12 @@ public class EmailDispatcher : IEmailDispatcher
 
     private async Task SendEmail(string recipient, string body)
     {
-        _logger.LogInformation("Creating connection and channel with Email Worker Queue");
-        
+        logger.LogInformation(
+            "Creating connection and channel with Email Worker Queue. Exchange: {EmailSenderExchange}, Routing Key: {}",
+            _emailSenderExchange,
+            _emailSenderRk
+        );
+
         var factory = new ConnectionFactory
         {
             HostName = "localhost",
@@ -68,18 +68,19 @@ public class EmailDispatcher : IEmailDispatcher
             Subject = "Welcome",
             Body = body
         };
-        
-        _logger.LogInformation("Created Email Model with subject {MessageSubject}", message.Subject);
+
+        logger.LogInformation("Created Email Model with subject {MessageSubject} by ID: {MessageId}", message.Subject,
+            message.Id);
 
         var json = JsonConvert.SerializeObject(message);
         var bodyBytes = Encoding.UTF8.GetBytes(json);
 
         await channel.BasicPublishAsync(
-            exchange: "sub-email-sender-exchange",
-            routingKey: "sub-email",
+            exchange: _emailSenderExchange,
+            routingKey: _emailSenderRk,
             body: bodyBytes
         );
-        
-        _logger.LogInformation("Email message sent successfully!");
+
+        logger.LogInformation("Email message sent successfully! MessageId: {MessageId}", message.Id);
     }
 }
