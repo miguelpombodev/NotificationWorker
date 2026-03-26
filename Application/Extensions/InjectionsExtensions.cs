@@ -7,8 +7,13 @@ public static class InjectionsExtensions
 {
     public static IServiceCollection AddDependencyInjections(this IServiceCollection services)
     {
+        services.AddScoped<INotificationHandler, EmailHandler>();
+        services.AddScoped<INotificationHandler, SmsHandler>();
+        
+        
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IEmailDispatcher, EmailDispatcher>();
+        
         services.AddSingleton<ITemplateRenderer, RazorTemplateRenderer>();
 
         return services;
