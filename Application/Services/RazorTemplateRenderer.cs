@@ -28,15 +28,14 @@ public class RazorTemplateRenderer : ITemplateRenderer
         if (!Path.Exists($"{_templatesBaseFolderName}/{formattedProjectFolderName}"))
         {
             _logger.LogError(
-                "Project Templates Folder {ProjectFolderName} was called but its no exists, ExceptionType: {Exception}",
+                "Project Templates Folder {ProjectFolderName} was called but it does not exist, ExceptionType: {Exception}",
                 formattedProjectFolderName,
                 nameof(DirectoryNotFoundException));
 
             throw new DirectoryNotFoundException(
                 $"Project Folder {formattedProjectFolderName} in Templates folder does not exist! Please check it ");
         }
-
-
+        
         return _engine.CompileRenderAsync($"{formattedProjectFolderName}/{template}.cshtml", model);
     }
 }

@@ -22,18 +22,22 @@ public static class MassTransitExtensions
                     host.RequestedConnectionTimeout(TimeSpan.FromSeconds(10));
                 });
 
-                cfg.UseMessageRetry(r => r.Exponential(
-                        retryLimit: 5,
-                        minInterval: TimeSpan.FromSeconds(1),
-                        maxInterval: TimeSpan.FromSeconds(30),
-                        intervalDelta: TimeSpan.FromSeconds(2)
-                    )
-                );
+                cfg.UseMessageRetry(r =>
+                {
+                    r.Exponential(
+                        retryLimit:    5,
+                        minInterval:   TimeSpan.FromSeconds(1),
+                        maxInterval:   TimeSpan.FromSeconds(30),
+                        intervalDelta: TimeSpan.FromSeconds(2));
+
+                    r.Ignore<DirectoryNotFoundException>();
+                    r.Ignore<FileNotFoundException>();
+                });
 
                 cfg.ReceiveEndpoint("notification-worker", e =>
                 {
-                    e.PrefetchCount = 16;
-                    e.ConcurrentMessageLimit = 8;
+                    e.PrefetchCount = rabbitOptions.PrefetchCount;
+                    e.ConcurrentMessageLimit = rabbitOptions.PrefetchCount / 2;
                     e.ConfigureConsumer<NotificationRequestedConsumer>(ctx);
                 });
             });

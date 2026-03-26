@@ -15,8 +15,11 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.AddSerilogService(builder.Environment.EnvironmentName, otelEndpoint);
 
-builder.Services.AddOptions<RabbitMqOptions>().Bind(builder.Configuration.GetSection("RabbitMq"))
-    .ValidateDataAnnotations().ValidateOnStart();
+builder.Services.AddOptions<RabbitMqOptions>().Bind(
+        builder.Configuration.GetSection("RabbitMq")
+    )
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
 builder.Services.AddOpenTelemetryService(otelEndpoint);
 

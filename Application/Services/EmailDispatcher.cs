@@ -1,7 +1,4 @@
-using System.Text;
-using MassTransit;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Models;
 using NotificationWorker.Domain.Models.Emails;
@@ -22,7 +19,7 @@ public class EmailDispatcher(
 
     public async Task SendAsync(NotificationRequested notification)
     {
-        await RetryPolicies.EmailRetry.ExecuteAsync(async () =>
+        await RetryPolicies.EmailRetry(logger).ExecuteAsync(async token =>
         {
             var model = MapTemplate(notification);
             var body = await templateRenderer.RenderAsync(notification.Project,notification.Template, model.TemplateModel);

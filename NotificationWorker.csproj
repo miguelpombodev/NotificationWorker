@@ -48,4 +48,10 @@
         <HintPath>..\..\..\.nuget\packages\xunit.extensibility.core\2.9.3\lib\netstandard1.1\xunit.core.dll</HintPath>
       </Reference>
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="NotificationWorker.Tests\obj\NotificationWorker.Tests.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="NotificationWorker.Tests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="NotificationWorker.Tests\obj\project.packagespec.json" />
+    </ItemGroup>
 </Project>
