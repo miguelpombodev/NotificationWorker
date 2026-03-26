@@ -1,5 +1,4 @@
 using NotificationWorker.Application.Contracts;
-using NotificationWorker.Domain.Enums;
 using NotificationWorker.Domain.Models;
 
 namespace NotificationWorker.Application.Services;
@@ -10,7 +9,7 @@ public class NotificationService(IEnumerable<INotificationHandler> handlers) : I
     {
         var handler = handlers.FirstOrDefault(n => n.Channel == notification.Channel);
 
-        if (handler == null) throw new InvalidOperationException("Handler does not exist");
+        if (handler is null) throw new InvalidOperationException("Handler does not exist");
 
         await handler.HandleAsync(notification);
     }

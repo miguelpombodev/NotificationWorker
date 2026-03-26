@@ -25,7 +25,7 @@ public class EmailDispatcher(
         await RetryPolicies.EmailRetry.ExecuteAsync(async () =>
         {
             var model = MapTemplate(notification);
-            var body = await templateRenderer.RenderAsync(notification.Template, model.TemplateModel);
+            var body = await templateRenderer.RenderAsync(notification.Project,notification.Template, model.TemplateModel);
 
             await SendEmail(notification.Recipient, body);
         });
@@ -42,7 +42,8 @@ public class EmailDispatcher(
                 {
                     Name = notification.Data["name"]?.ToString() ?? string.Empty,
                     Email = notification.Recipient,
-                    LoginUrl = notification.Data["loginUrl"]?.ToString() ?? string.Empty
+                    LoginUrl = notification.Data["loginUrl"]?.ToString() ?? string.Empty,
+                    Role = notification.Data["role"]?.ToString() ?? string.Empty,
                 }),
             _ => throw new InvalidOperationException("Invalid template")
         };

@@ -15,8 +15,8 @@ public class RazorTemplateRenderer : ITemplateRenderer
             .Build();
     }
 
-    public Task<string> RenderAsync(string template, object model)
+    public Task<string> RenderAsync(string project, string template, object model)
     {
-        return _engine.CompileRenderAsync($"{template}.cshtml", model);
+        return _engine.CompileRenderAsync($"{project}/{template}.cshtml", model);
     }
 }
