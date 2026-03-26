@@ -13,6 +13,7 @@ public static class InjectionsExtensions
         
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IEmailDispatcher, EmailDispatcher>();
+        services.AddScoped<ISmsDispatcher, SmsDispatcher>();
         
         services.AddSingleton<ITemplateRenderer, RazorTemplateRenderer>();
 
