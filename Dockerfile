@@ -3,15 +3,15 @@ ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
 
-COPY ["NotificationWorker.csproj", "./"]
+COPY ["src/NotificationWorker/NotificationWorker.csproj", "./"]
 
 RUN --mount=type=cache,target=/root/.nuget/packages \
-    dotnet restore "NotificationWorker.csproj" --verbosity normal 
+    dotnet restore "src/NotificationWorker/NotificationWorker.csproj" --verbosity normal 
 
 COPY . .
 
 RUN --mount=type=cache,target=/root/.nuget/packages \
-    dotnet publish "NotificationWorker.csproj" \
+    dotnet publish "src/NotificationWorker/NotificationWorker.csproj" \
     -c $BUILD_CONFIGURATION -o /app/publish \
     /p:UseAppHost=false
     
@@ -28,4 +28,4 @@ COPY --from=build --chown=${APP_USER}:${APP_USER} /app/publish .
 
 USER ${APP_USER}
 
-ENTRYPOINT ["dotnet", "NotificationWorker.dll"]
+ENTRYPOINT ["dotnet", "src/NotificationWorker/NotificationWorker.dll"]

@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    name: Building .NET Worker Image
     runs-on: ubuntu-latest
     steps:
       -
