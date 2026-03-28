@@ -1,0 +1,43 @@
+﻿services:
+#  notificationworker:
+#    image: notificationworker
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    depends_on:
+#      rabbitmq:
+#        condition: service_completed_successfully
+#      email_sender:
+#        condition: service_completed_successfully
+#    networks:
+#      - notification_net
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    platform: linux/amd64
+    container_name: team_manager_rabbitmq_broker_management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - notification_net
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+  email_sender:
+    extends:
+      service: email_sender
+      file: email-service.yml
+    networks:
+      - notification_net
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+
+networks:
+  notification_net:
+    driver: bridge
+    
+volumes:
+  rabbitmq_data:
