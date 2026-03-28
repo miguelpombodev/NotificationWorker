@@ -1,0 +1,4 @@
+/home/pombo/Dev/C#/NotificationWorker/obj/Debug/net10.0/NotificationWorker.csproj.AssemblyReference.cache
+/home/pombo/Dev/C#/NotificationWorker/obj/Debug/net10.0/NotificationWorker.GeneratedMSBuildEditorConfig.editorconfig
+/home/pombo/Dev/C#/NotificationWorker/obj/Debug/net10.0/NotificationWorker.csproj.CoreCompileInputs.cache
+/home/pombo/Dev/C#/NotificationWorker/obj/Debug/net10.0/NotificationWorker.sourcelink.json
