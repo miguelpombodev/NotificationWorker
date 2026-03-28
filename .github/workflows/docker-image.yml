@@ -23,7 +23,7 @@ jobs:
       -
         name: Build Docker Image
         run: |
-          docker buildx build
+          docker buildx build \
           -t wallghost/notification-worker:latest \
           --load \
           .
