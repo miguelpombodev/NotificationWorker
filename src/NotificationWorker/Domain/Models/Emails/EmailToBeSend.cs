@@ -6,10 +6,12 @@ namespace NotificationWorker.Domain.Models.Emails;
 
 public class EmailToBeSend : Message
 {
-    
-    public string To { get; set; }
-    public string Subject { get; set; }
-    public string Body { get; set; }
+    public IReadOnlyList<string> To { get; init; } = [];
+    public IReadOnlyList<string> Cc { get; init; } = [];
+    public IReadOnlyList<string> Bcc { get; init; } = [];
+    public IReadOnlyList<Attachment> Attachments { get; set; } = [];
+    public string Subject { get; set; } = default!;
+    public string Body { get; set; } = default!;
 
     public byte[] ParseToBytes()
     {

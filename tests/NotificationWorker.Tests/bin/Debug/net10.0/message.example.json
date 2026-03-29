@@ -11,6 +11,8 @@
     "data":{
       "subject":"Welcome to Team Manager",
       "name":"user",
+      "cc": "test-cc@email.com",
+      "bcc": "test-cc@email.com",
       "loginUrl":"https://google.com",
       "role":"Developer"
     }

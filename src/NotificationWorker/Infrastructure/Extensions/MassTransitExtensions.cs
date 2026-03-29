@@ -1,5 +1,6 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
+using NotificationWorker.Domain.Models;
 using NotificationWorker.Domain.Models.Providers;
 
 namespace NotificationWorker.Infrastructure.Extensions;
@@ -38,6 +39,14 @@ public static class MassTransitExtensions
                 {
                     e.PrefetchCount = rabbitOptions.PrefetchCount;
                     e.ConcurrentMessageLimit = rabbitOptions.PrefetchCount / 2;
+                    
+                    e.Batch<NotificationRequested>(b =>
+                    {
+                        b.MessageLimit = 10;
+                        b.TimeLimit = TimeSpan.FromSeconds(2);
+                        b.ConcurrencyLimit = 4;
+                    });
+                    
                     e.ConfigureConsumer<NotificationRequestedConsumer>(ctx);
                 });
             });

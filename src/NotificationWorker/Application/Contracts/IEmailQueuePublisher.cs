@@ -2,7 +2,7 @@ using NotificationWorker.Domain.Models.Emails;
 
 namespace NotificationWorker.Application.Contracts;
 
-public interface IEmailDispatcher
+public interface IEmailQueuePublisher
 {
-    Task SendAsync(EmailToBeSend emailToBeSend);
+    Task PublishAsync(EmailToBeSend email, CancellationToken ct);
 }

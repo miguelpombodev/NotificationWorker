@@ -1,91 +1,98 @@
 using FluentAssertions;
-using Microsoft.Extensions.Options;
-using Moq;
 using Microsoft.Extensions.Logging;
+using Moq;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Application.Services;
-using NotificationWorker.Domain.Enums;
-using NotificationWorker.Domain.Models;
-using NotificationWorker.Domain.Models.Providers;
+using NotificationWorker.Domain.Models.Emails;
 using Xunit;
 
 namespace NotificationWorker.Tests.Application.Services;
 
 public class EmailDispatcherTests
 {
-    private readonly Mock<ITemplateRenderer> _templateRendererMock = new();
-    private readonly Mock<ILogger<EmailDispatcher>> _loggerMock = new();
-    private readonly Mock<IOptions<RabbitMqOptions>> _rabbitMqOptions = new();
+    private readonly Mock<ILogger<EmailDispatcher>> _logger = new();
+    private readonly Mock<IEmailQueuePublisher> _publisher = new();
 
     private EmailDispatcher CreateSut() =>
-        new(_templateRendererMock.Object, _loggerMock.Object, _rabbitMqOptions.Object);
+        new(_logger.Object, _publisher.Object);
 
     [Fact]
-    public async Task SendAsync_WhenTemplateNotFound_ShouldNotRetry()
+    public async Task SendAsync_WhenPublishSucceeds_ShouldPublishOnce()
     {
         // Arrange
-        NotificationChannel emailChannel = NotificationChannel.Email;
-        var notification = new NotificationRequested
-        {
-            Channel = emailChannel,
-            Project = "invalid-project",
-            Template = "welcome",
-            Recipient = "test@test.com",
-            Data = new Dictionary<string, object>()
-            {
-                { "subject", "welcome test" },
-                { "name", "user" },
-                { "loginUrl", "https://test.com" },
-                { "role", "Developer" }
-            }
-        };
+        var email = BuildEmail();
 
-        _templateRendererMock
-            .Setup(r => r.RenderAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()))
-            .ThrowsAsync(new DirectoryNotFoundException(
-                "Project Folder invalid_project in Templates folder does not exist! Please check it "));
+        _publisher
+            .Setup(p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
         var sut = CreateSut();
 
         // Act
-        var act = async () => await sut.SendAsync(notification);
+        await sut.SendAsync(email);
 
         // Assert
-        await act.Should().ThrowAsync<DirectoryNotFoundException>();
-
-
-        // check if method was called only once
-        _templateRendererMock.Verify(
-            r => r.RenderAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()),
+        _publisher.Verify(
+            p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
     [Fact]
-    public async Task SendAsync_WhenTemplateIsUnknown_ShouldThrowInvalidOperation()
+    public async Task SendAsync_WhenPublishThrowsTransientError_ShouldRetry()
     {
         // Arrange
-        NotificationChannel emailChannel = NotificationChannel.Email;
-        var notification = new NotificationRequested
-        {
-            Channel = emailChannel,
-            Project = "notification-worker",
-            Template = "unknow-template",
-            Recipient = "test@test.com",
-            Data = new Dictionary<string, object>() 
+        var email = BuildEmail();
+        var callCount = 0;
+
+        _publisher
+            .Setup(p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()))
+            .Returns(() =>
             {
-                { "subject", "welcome test" },
-                { "name", "user" },
-                { "loginUrl", "https://test.com" },
-                { "role", "Developer" }
-            }
-        };
+                callCount++;
+                // falha nas duas primeiras tentativas, sucesso na terceira
+                return callCount < 3
+                    ? Task.FromException(new HttpRequestException("connection refused"))
+                    : Task.CompletedTask;
+            });
 
         var sut = CreateSut();
 
         // Act
-        var act = async () => await sut.SendAsync(notification);
+        await sut.SendAsync(email);
 
         // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("Invalid template");
+        _publisher.Verify(
+            p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(3));
     }
+
+    [Fact]
+    public async Task SendAsync_WhenPublishThrowsNonRetriableError_ShouldNotRetry()
+    {
+        // Arrange
+        var email = BuildEmail();
+
+        _publisher
+            .Setup(p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new InvalidOperationException("invalid state"));
+
+        var sut = CreateSut();
+
+        // Act
+        var act = async () => await sut.SendAsync(email);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>();
+
+        _publisher.Verify(
+            p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()),
+            Times.Once);
+    }
+
+    private static EmailToBeSend BuildEmail() => new()
+    {
+        To = ["test@test.com"],
+        Subject = "Test subject",
+        Body = "<p>Hello</p>"
+    };
 }

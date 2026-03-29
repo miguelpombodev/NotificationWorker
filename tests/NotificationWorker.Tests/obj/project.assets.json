@@ -4335,7 +4335,6 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj",
       "FluentAssertions >= 8.9.0",
       "Microsoft.Extensions.DependencyInjection >= 10.0.5",
       "Microsoft.Extensions.Hosting >= 10.0.5",
@@ -4373,9 +4372,6 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj": {
-              "projectPath": "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj"
-            },
             "/home/pombo/Dev/C#/NotificationWorker/src/NotificationWorker/NotificationWorker.csproj": {
               "projectPath": "/home/pombo/Dev/C#/NotificationWorker/src/NotificationWorker/NotificationWorker.csproj"
             }
@@ -4726,16 +4722,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project '/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  }
 }

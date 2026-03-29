@@ -457,9 +457,6 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj": {
-                "projectPath": "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj"
-              },
               "/home/pombo/Dev/C#/NotificationWorker/src/NotificationWorker/NotificationWorker.csproj": {
                 "projectPath": "/home/pombo/Dev/C#/NotificationWorker/src/NotificationWorker/NotificationWorker.csproj"
               }
