@@ -12,32 +12,41 @@
 #    networks:
 #      - notification_net
   rabbitmq:
-    image: rabbitmq:3.12-management
-    platform: linux/amd64
-    container_name: team_manager_rabbitmq_broker_management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+    image: rabbitmq:4-management
+    container_name: notification_rabbit_mq
     networks:
       - notification_net
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin123
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+      
   email_sender:
     extends:
       service: email_sender
       file: email-service.yml
+
     networks:
       - notification_net
     restart: on-failure
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
 
 networks:
   notification_net:
-    driver: bridge
     
 volumes:
   rabbitmq_data:

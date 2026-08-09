@@ -2,17 +2,20 @@ services:
   email_sender:
     image: wallghost/email-sender-subscriber:latest
     container_name: email_sender
+    env_file:
+      - ./.env
     environment:
       - Smtp__Host=sandbox.smtp.mailtrap.io
       - Smtp__Port=465
-      - Smtp__User=
-      - Smtp__Password=
+      - Smtp__User=${SMTP_USER}
+      - Smtp__Password=${SMTP_PASSWORD}
       - Smtp__FromEmail=no-respond@teammanager-bot.com
       - Smtp__FromName="Team Manager"
       - RabbitMq__HostName=rabbitmq
       - RabbitMq__Port=5672
-      - RabbitMq__UserName=admin
-      - RabbitMq__Password=admin123
+      - RabbitMq__UserName=${RABBITMQ_USER}
+      - RabbitMq__Password=${RABBITMQ_PASSWORD}
       - RabbitMq__QueueName=sub-email-sender
       - RabbitMq__ExchangeName=sub-email-sender-exchange
       - RabbitMq__RoutingKeyName=sub-email
+      - MT_LICENSE=${MT_LICENSE}
