@@ -3,39 +3,43 @@ using RazorLight;
 
 namespace NotificationWorker.Application.Services;
 
-public class RazorTemplateRenderer : ITemplateRenderer
+public class RazorTemplateRenderer(
+    ILogger<RazorTemplateRenderer> logger) : ITemplateRenderer
 {
-    private readonly RazorLightEngine _engine;
-    private readonly ILogger<RazorTemplateRenderer> _logger;
+    private readonly RazorLightEngine _engine = CreateEngine();
 
-    private readonly string _templatesBaseFolderName =
-        Path.Combine(Directory.GetCurrentDirectory(), "Infrastructure/Templates");
-
-    public RazorTemplateRenderer(ILogger<RazorTemplateRenderer> logger)
+    private static RazorLightEngine CreateEngine()
     {
-        _engine = new RazorLightEngineBuilder()
-            .UseFileSystemProject(_templatesBaseFolderName)
+        var templatesPath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Infrastructure",
+            "Templates");
+
+        if (!Directory.Exists(templatesPath))
+        {
+            throw new DirectoryNotFoundException(
+                $"Templates directory not found: {templatesPath}");
+        }
+
+        return new RazorLightEngineBuilder()
+            .UseFileSystemProject(templatesPath)
             .UseMemoryCachingProvider()
             .Build();
-
-        _logger = logger;
     }
 
-    public Task<string> RenderAsync(string project, string template, object model)
+    public async Task<string> RenderAsync<TModel>(
+        string project,
+        string template,
+        TModel model)
     {
-        var formattedProjectFolderName = project.Replace(" ", "_").Replace("-", "_").ToLower();
+        var templatePath = $"{project}/{template}.cshtml";
 
-        if (!Path.Exists($"{_templatesBaseFolderName}/{formattedProjectFolderName}"))
-        {
-            _logger.LogError(
-                "Project Templates Folder {ProjectFolderName} was called but it does not exist, ExceptionType: {Exception}",
-                formattedProjectFolderName,
-                nameof(DirectoryNotFoundException));
+        logger.LogInformation(
+            "Rendering template {TemplatePath}",
+            templatePath);
 
-            throw new DirectoryNotFoundException(
-                $"Project Folder {formattedProjectFolderName} in Templates folder does not exist! Please check it ");
-        }
-        
-        return _engine.CompileRenderAsync($"{formattedProjectFolderName}/{template}.cshtml", model);
+        return await _engine.CompileRenderAsync(
+            templatePath,
+            model);
     }
 }

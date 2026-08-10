@@ -33,8 +33,9 @@
         <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
 
-        <Content Include="Templates\**\*.cshtml">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Content Include="Infrastructure\Templates\**\*.cshtml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
 
         <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
