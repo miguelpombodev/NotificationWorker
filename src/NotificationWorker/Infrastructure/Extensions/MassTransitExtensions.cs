@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using NotificationWorker.Domain.Models;
@@ -17,6 +18,12 @@ public static class MassTransitExtensions
 			{
 				RabbitMqOptions rabbitOptions = ctx.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
 
+				cfg.ConfigureJsonSerializerOptions(options =>
+				{
+					options.Converters.Add(new JsonStringEnumConverter());
+					return options;
+				});
+				
 				cfg.Host(
 					rabbitOptions.HostName,
 					(ushort)rabbitOptions.Port,

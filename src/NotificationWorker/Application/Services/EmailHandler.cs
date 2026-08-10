@@ -28,7 +28,14 @@ public class EmailHandler(
 
     private EmailToBeSend BuildMessage(NotificationRequested notification, string body)
     {
-        var subject = notification.Data["subject"].ToString();
+        if (!notification.Data.TryGetValue("subject", out var subjectValue))
+        {
+            throw new InvalidOperationException(
+                $"Email subject was not provided. Template: {notification.Template}");
+        }
+
+        string? subject = subjectValue?.ToString();
+
         if (string.IsNullOrWhiteSpace(subject))
         {
             logger.LogError(
@@ -39,9 +46,14 @@ public class EmailHandler(
             throw new InvalidOperationException("Email subject cannot be nullable or whitespace! Please check it!");
         }
 
-        var attachments = ParseAttachment(notification.Data["attachments"]);
-        var cc = ParseStringList(notification.Data["cc"].ToString());
-        var bcc = ParseStringList(notification.Data["bcc"].ToString());
+        notification.Data.TryGetValue("attachments", out var attachmentsValue);
+
+        IReadOnlyList<Attachment> attachments = ParseAttachment(attachmentsValue);
+        notification.Data.TryGetValue("cc", out var ccValue);
+        notification.Data.TryGetValue("bcc", out var bccValue);
+
+        IReadOnlyList<string> cc = ParseStringList(ccValue);
+        IReadOnlyList<string> bcc = ParseStringList(bccValue);
 
 
         return new EmailToBeSend
