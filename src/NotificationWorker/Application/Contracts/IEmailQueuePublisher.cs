@@ -1,5 +1,6 @@
-using NotificationWorker.Domain.Contracts;
-using NotificationWorker.Domain.Models.Emails;
+
+
+using CloudMart.Messaging.Contracts;
 
 namespace NotificationWorker.Application.Contracts;
 

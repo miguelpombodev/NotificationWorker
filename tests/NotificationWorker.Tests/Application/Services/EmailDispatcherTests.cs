@@ -1,9 +1,9 @@
+using CloudMart.Messaging.Contracts;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Application.Services;
-using NotificationWorker.Domain.Contracts;
 using NotificationWorker.Domain.Models.Emails;
 using Xunit;
 

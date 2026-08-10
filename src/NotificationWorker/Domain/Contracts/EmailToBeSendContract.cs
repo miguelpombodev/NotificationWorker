@@ -1,4 +1,4 @@
-namespace NotificationWorker.Domain.Contracts;
+namespace CloudMart.Messaging.Contracts;
 
 public class EmailToBeSendContract
 {
