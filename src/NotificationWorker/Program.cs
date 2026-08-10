@@ -28,5 +28,4 @@ builder.Services.AddMassTransitService();
 builder.Services.AddDependencyInjections();
 builder.Services.AddAllHealthChecks();
 
-var host = builder.Build();
-host.Run();
+await builder.Build().RunAsync();

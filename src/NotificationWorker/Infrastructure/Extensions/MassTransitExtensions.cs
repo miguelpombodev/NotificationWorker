@@ -7,51 +7,52 @@ namespace NotificationWorker.Infrastructure.Extensions;
 
 public static class MassTransitExtensions
 {
-    public static IServiceCollection AddMassTransitService(this IServiceCollection services)
-    {
-        services.AddMassTransit(x =>
-        {
-            x.AddConsumer<NotificationRequestedConsumer>();
-            x.UsingRabbitMq((ctx, cfg) =>
-            {
-                var rabbitOptions = ctx.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+	public static IServiceCollection AddMassTransitService(this IServiceCollection services)
+	{
+		services.AddMassTransit(x =>
+		{
+			x.AddConsumer<NotificationRequestedConsumer>();
 
-                cfg.Host(rabbitOptions.HostName, "/", host =>
-                {
-                    host.Username(rabbitOptions.UserName);
-                    host.Password(rabbitOptions.Password);
-                    host.RequestedConnectionTimeout(TimeSpan.FromSeconds(10));
-                });
+			x.UsingRabbitMq((ctx, cfg) =>
+			{
+				RabbitMqOptions rabbitOptions = ctx.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
 
-                cfg.UseMessageRetry(r =>
-                {
-                    r.Exponential(
-                        retryLimit:    5,
-                        minInterval:   TimeSpan.FromSeconds(1),
-                        maxInterval:   TimeSpan.FromSeconds(30),
-                        intervalDelta: TimeSpan.FromSeconds(2));
+				cfg.Host(
+					rabbitOptions.HostName,
+					(ushort)rabbitOptions.Port,
+					rabbitOptions.VirtualHost,
+					host =>
+					{
+						host.Username(rabbitOptions.UserName);
+						host.Password(rabbitOptions.Password);
+						host.RequestedConnectionTimeout(TimeSpan.FromSeconds(10));
+					});
 
-                    r.Ignore<DirectoryNotFoundException>();
-                    r.Ignore<FileNotFoundException>();
-                });
+				cfg.ReceiveEndpoint(rabbitOptions.QueueName, e =>
+				{
+					e.PrefetchCount = rabbitOptions.PrefetchCount;
+					e.ConcurrentMessageLimit = Math.Max(1, rabbitOptions.PrefetchCount / 2);
 
-                cfg.ReceiveEndpoint("notification-worker", e =>
-                {
-                    e.PrefetchCount = rabbitOptions.PrefetchCount;
-                    e.ConcurrentMessageLimit = rabbitOptions.PrefetchCount / 2;
-                    
-                    e.Batch<NotificationRequested>(b =>
-                    {
-                        b.MessageLimit = 10;
-                        b.TimeLimit = TimeSpan.FromSeconds(2);
-                        b.ConcurrencyLimit = 4;
-                    });
-                    
-                    e.ConfigureConsumer<NotificationRequestedConsumer>(ctx);
-                });
-            });
-        });
+					e.UseMessageRetry(r =>
+					{
+						r.Ignore<DirectoryNotFoundException>();
+						r.Ignore<FileNotFoundException>();
+						
+						r.Handle<TimeoutException>();
+						r.Handle<HttpRequestException>();
+						
+						r.Exponential(
+							retryLimit: 5, 
+							minInterval: TimeSpan.FromSeconds(2),
+							maxInterval: TimeSpan.FromSeconds(30),
+							intervalDelta: TimeSpan.FromSeconds(5));
+					});
 
-        return services;
-    }
+					e.ConfigureConsumer<NotificationRequestedConsumer>(ctx);
+				});
+			});
+		});
+
+		return services;
+	}
 }

@@ -4,19 +4,20 @@ using NotificationWorker.Domain.Models;
 
 namespace NotificationWorker.Infrastructure;
 
-public class NotificationRequestedConsumer : IConsumer<Batch<NotificationRequested>>
+public class NotificationRequestedConsumer : IConsumer<NotificationRequested>
 {
-    private readonly INotificationService _notificationService;
+	private readonly INotificationService _notificationService;
 
-    public NotificationRequestedConsumer(INotificationService notificationService)
-    {
-        _notificationService = notificationService;
-    }
+	public NotificationRequestedConsumer(
+		INotificationService notificationService)
+	{
+		_notificationService = notificationService;
+	}
 
-    public async Task Consume(ConsumeContext<Batch<NotificationRequested>> context)
-    {
-        var tasks = context.Message.Select(async x => await _notificationService.ProcessAsync(x.Message));
-
-        await Task.WhenAll(tasks);
-    }
+	public async Task Consume(
+		ConsumeContext<NotificationRequested> context)
+	{
+		await _notificationService.ProcessAsync(
+			context.Message);
+	}
 }

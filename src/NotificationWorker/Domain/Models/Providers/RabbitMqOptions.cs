@@ -28,6 +28,10 @@ public class RabbitMqOptions
     [Required(ErrorMessage = "RabbitMq:ExchangeName is required.")]
     [MinLength(1)]
     public string ExchangeName { get; set; } = "notification-worker-exchange";
+    
+    [Required(ErrorMessage = "RabbitMq:VirtualHost is required.")]
+    [MinLength(1)]
+    public string VirtualHost { get; set; } = "/";
 
     [Required(ErrorMessage = "RabbitMq:RoutingKeyName is required.")]
     [MinLength(1)]
