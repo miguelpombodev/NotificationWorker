@@ -44,10 +44,4 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-
-    <ItemGroup>
-      <None Include="..\.env">
-        <Link>.env</Link>
-      </None>
-    </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "fY9bBUTo3M0=",
-  "success": true,
+  "dgSpecHash": "k/Zo0vveIaM=",
+  "success": false,
   "projectFilePath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
   "expectedPackageFiles": [
     "/home/pombo/.nuget/packages/aspnetcore.healthchecks.rabbitmq/9.0.0/aspnetcore.healthchecks.rabbitmq.9.0.0.nupkg.sha512",
@@ -13,9 +13,9 @@
     "/home/pombo/.nuget/packages/grpc.core.api/2.70.0/grpc.core.api.2.70.0.nupkg.sha512",
     "/home/pombo/.nuget/packages/grpc.net.client/2.70.0/grpc.net.client.2.70.0.nupkg.sha512",
     "/home/pombo/.nuget/packages/grpc.net.common/2.70.0/grpc.net.common.2.70.0.nupkg.sha512",
-    "/home/pombo/.nuget/packages/masstransit/9.0.1/masstransit.9.0.1.nupkg.sha512",
-    "/home/pombo/.nuget/packages/masstransit.abstractions/9.0.1/masstransit.abstractions.9.0.1.nupkg.sha512",
-    "/home/pombo/.nuget/packages/masstransit.rabbitmq/9.0.1/masstransit.rabbitmq.9.0.1.nupkg.sha512",
+    "/home/pombo/.nuget/packages/masstransit/8.5.1/masstransit.8.5.1.nupkg.sha512",
+    "/home/pombo/.nuget/packages/masstransit.abstractions/8.5.1/masstransit.abstractions.8.5.1.nupkg.sha512",
+    "/home/pombo/.nuget/packages/masstransit.rabbitmq/8.5.1/masstransit.rabbitmq.8.5.1.nupkg.sha512",
     "/home/pombo/.nuget/packages/microsoft.aspnetcore.mvc.razor.extensions/6.0.0/microsoft.aspnetcore.mvc.razor.extensions.6.0.0.nupkg.sha512",
     "/home/pombo/.nuget/packages/microsoft.aspnetcore.razor.language/6.0.0/microsoft.aspnetcore.razor.language.6.0.0.nupkg.sha512",
     "/home/pombo/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.2/microsoft.codeanalysis.analyzers.3.3.2.nupkg.sha512",
@@ -71,7 +71,7 @@
     "/home/pombo/.nuget/packages/opentelemetry.instrumentation.runtime/1.15.0/opentelemetry.instrumentation.runtime.1.15.0.nupkg.sha512",
     "/home/pombo/.nuget/packages/polly/8.6.6/polly.8.6.6.nupkg.sha512",
     "/home/pombo/.nuget/packages/polly.core/8.6.6/polly.core.8.6.6.nupkg.sha512",
-    "/home/pombo/.nuget/packages/rabbitmq.client/7.2.0/rabbitmq.client.7.2.0.nupkg.sha512",
+    "/home/pombo/.nuget/packages/rabbitmq.client/7.1.2/rabbitmq.client.7.1.2.nupkg.sha512",
     "/home/pombo/.nuget/packages/razorlight/2.3.1/razorlight.2.3.1.nupkg.sha512",
     "/home/pombo/.nuget/packages/serilog/4.3.0/serilog.4.3.0.nupkg.sha512",
     "/home/pombo/.nuget/packages/serilog.extensions.hosting/10.0.0/serilog.extensions.hosting.10.0.0.nupkg.sha512",
@@ -89,5 +89,65 @@
     "/home/pombo/.nuget/packages/xunit.extensibility.execution/2.9.3/xunit.extensibility.execution.2.9.3.nupkg.sha512",
     "/home/pombo/.nuget/packages/xunit.runner.visualstudio/3.1.4/xunit.runner.visualstudio.3.1.4.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project '/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj'. Check that the project reference is valid and that the project file exists.",
+      "projectPath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "filePath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "libraryId": "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
+      "projectPath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "libraryId": "OpenTelemetry.Api",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4625-4j76-fww9",
+      "projectPath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-mr8r-92fq-pj8p",
+      "projectPath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-q834-8qmm-v933",
+      "projectPath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/NotificationWorker.Tests.csproj",
+      "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }
