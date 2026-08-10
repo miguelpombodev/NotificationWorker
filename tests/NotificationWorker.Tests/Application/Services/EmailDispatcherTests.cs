@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Application.Services;
+using NotificationWorker.Domain.Contracts;
 using NotificationWorker.Domain.Models.Emails;
 using Xunit;
 
@@ -25,7 +26,7 @@ public class EmailDispatcherTests
 
 		_publisher
 			.Setup(p => p.PublishAsync(
-				It.IsAny<EmailToBeSend>(),
+				It.IsAny<EmailToBeSendContract>(),
 				It.IsAny<CancellationToken>()))
 			.Returns(Task.CompletedTask);
 
@@ -37,7 +38,7 @@ public class EmailDispatcherTests
 		// Assert
 		_publisher.Verify(
 			p => p.PublishAsync(
-				It.IsAny<EmailToBeSend>(),
+				It.IsAny<EmailToBeSendContract>(),
 				It.IsAny<CancellationToken>()),
 			Times.Once);
 	}
@@ -51,7 +52,7 @@ public class EmailDispatcherTests
 
 		_publisher
 			.Setup(p => p.PublishAsync(
-				It.IsAny<EmailToBeSend>(),
+				It.IsAny<EmailToBeSendContract>(),
 				It.IsAny<CancellationToken>()))
 			.Returns(() =>
 			{
@@ -71,7 +72,7 @@ public class EmailDispatcherTests
 		// Assert
 		_publisher.Verify(
 			p => p.PublishAsync(
-				It.IsAny<EmailToBeSend>(),
+				It.IsAny<EmailToBeSendContract>(),
 				It.IsAny<CancellationToken>()),
 			Times.Exactly(3));
 	}
@@ -84,7 +85,7 @@ public class EmailDispatcherTests
 
 		_publisher
 			.Setup(p => p.PublishAsync(
-				It.IsAny<EmailToBeSend>(),
+				It.IsAny<EmailToBeSendContract>(),
 				It.IsAny<CancellationToken>()))
 			.ThrowsAsync(
 				new InvalidOperationException("invalid state"));
@@ -100,7 +101,7 @@ public class EmailDispatcherTests
 
 		_publisher.Verify(
 			p => p.PublishAsync(
-				It.IsAny<EmailToBeSend>(),
+				It.IsAny<EmailToBeSendContract>(),
 				It.IsAny<CancellationToken>()),
 			Times.Once);
 	}

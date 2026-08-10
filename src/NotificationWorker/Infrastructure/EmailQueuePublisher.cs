@@ -1,6 +1,7 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
 using NotificationWorker.Application.Contracts;
+using NotificationWorker.Domain.Contracts;
 using NotificationWorker.Domain.Models.Emails;
 using NotificationWorker.Domain.Models.Providers;
 
@@ -15,7 +16,7 @@ public sealed class EmailQueuePublisher(
 	private readonly RabbitMqOptions _options = options.Value;
 
 	public async Task PublishAsync(
-		EmailToBeSend email,
+		EmailToBeSendContract email,
 		CancellationToken ct)
 	{
 		ArgumentNullException.ThrowIfNull(email);

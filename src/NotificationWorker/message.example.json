@@ -38,3 +38,82 @@
   },
   "sentTime": "2026-08-10T17:00:00Z"
 }
+
+
+//{
+//  "messageId": "0198f8c4-7c9a-7b21-9e3c-123456789abc",
+//  "conversationId": "0198f8c4-7c9a-7b21-9e3c-123456789abd",
+//  "sourceAddress": "rabbitmq://localhost/test-producer",
+//  "destinationAddress": "rabbitmq://localhost/notification-worker",
+//  "messageType": [
+//    "urn:message:NotificationWorker.Domain.Models:NotificationRequested"
+//  ],
+//  "message": {
+//    "project": "team_manager",
+//    "template": "welcome",
+//    "recipient": "destinatario@example.com",
+//    "channel": "Email",
+//    "data": {
+//      "name": "João Silva",
+//      "subject": "Bem-vindo à CloudMart!",
+//      "loginUrl": "https://cloudmart.example.com/login",
+//      "role": "Customer"
+//    }
+//  },
+//  "sentTime": "2026-08-10T17:00:00Z"
+//}
+
+
+{
+  "messageId": "019fed55-c14c-7e1a-a44d-0ac74d84369c",
+  "requestId": null,
+  "correlationId": "0198f8c4-7c9a-7b21-9e3c-123456789abd",
+  "conversationId": "0198f8c4-7c9a-7b21-9e3c-123456789abd",
+  "initiatorId": null,
+  "sourceAddress": "rabbitmq://rabbitmq/test-producer",
+  "destinationAddress": "rabbitmq://rabbitmq/notification.email",
+  "responseAddress": null,
+  "faultAddress": null,
+  "messageType": [
+    "urn:message:SubEmailSender.Models:EmailToBeSend"
+  ],
+  "message": {
+    "id": "019fed55-c14c-7e1a-a44d-0ac74d84369c",
+    "to": "destinatario@example.com",
+    "cc": [
+      "copia1@example.com",
+      "copia2@example.com"
+    ],
+    "bcc": [
+      "auditoria@example.com"
+    ],
+    "subject": "Teste de envio de e-mail",
+    "body": "<html><body><h1>Olá, João!</h1><p>Este é um e-mail de teste enviado através do MassTransit.</p><p>Mensagem processada com sucesso.</p></body></html>",
+    "isBodyHtml": true,
+    "attachments": [
+      {
+        "fileName": "teste.txt",
+        "contentType": "text/plain",
+        "contentBase64": "SGVsbG8gZnJvbSBNYXNzVHJhbnNpdCEK"
+      },
+      {
+        "fileName": "dados.json",
+        "contentType": "application/json",
+        "contentBase64": "eyJzdGF0dXMiOiAib2siLCAic291cmNlIjogImVtYWlsLXNlbmRlciJ9"
+      }
+    ]
+  },
+  "expirationTime": null,
+  "sentTime": "2026-08-10T21:30:00Z",
+  "headers": {},
+  "host": {
+    "machineName": "test-producer",
+    "processName": "RabbitMQ.Management",
+    "processId": 1,
+    "assembly": "TestProducer",
+    "assemblyVersion": "1.0.0.0",
+    "frameworkVersion": ".NET",
+    "massTransitVersion": "8.5.1"
+  }
+}
+
