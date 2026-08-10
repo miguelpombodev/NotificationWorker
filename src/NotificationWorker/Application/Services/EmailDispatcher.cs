@@ -5,16 +5,14 @@ using NotificationWorker.Infrastructure;
 namespace NotificationWorker.Application.Services;
 
 public class EmailDispatcher(
-    ILogger<EmailDispatcher> logger,
-    IEmailQueuePublisher publisher)
-    : IEmailDispatcher
+	IEmailQueuePublisher publisher)
+	: IEmailDispatcher
 {
-
-    public async Task SendAsync(EmailToBeSend emailToBeSend)
-    {
-        await RetryPolicies.EmailRetry(logger).ExecuteAsync(async token =>
-        {
-            await publisher.PublishAsync(emailToBeSend, token);
-        });
-    }
+	public async Task SendAsync(
+		EmailToBeSend emailToBeSend, CancellationToken ct)
+	{
+		await publisher.PublishAsync(
+			emailToBeSend, ct
+		);
+	}
 }

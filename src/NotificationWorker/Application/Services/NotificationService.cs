@@ -8,7 +8,7 @@ public class NotificationService(
     ILogger<NotificationService> logger)
     : INotificationService
 {
-    public async Task ProcessAsync(NotificationRequested notification)
+    public async Task ProcessAsync(NotificationRequested notification, CancellationToken ct)
     {
         try
         {
@@ -26,7 +26,7 @@ public class NotificationService(
                 handler.GetType().Name,
                 notification.Channel);
 
-            await handler.HandleAsync(notification);
+            await handler.HandleAsync(notification, ct);
         }
         catch (Exception e)
         {

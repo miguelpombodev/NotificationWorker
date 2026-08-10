@@ -4,5 +4,5 @@ namespace NotificationWorker.Application.Contracts;
 
 public interface INotificationService
 {
-    Task ProcessAsync(NotificationRequested notification);
+    Task ProcessAsync(NotificationRequested notification, CancellationToken ct);
 }

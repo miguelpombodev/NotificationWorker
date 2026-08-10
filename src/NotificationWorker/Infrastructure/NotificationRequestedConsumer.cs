@@ -17,7 +17,14 @@ public class NotificationRequestedConsumer : IConsumer<NotificationRequested>
 	public async Task Consume(
 		ConsumeContext<NotificationRequested> context)
 	{
+		CancellationToken ct = context.CancellationToken;
+		
+		if (context.CancellationToken.IsCancellationRequested)
+		{
+			throw new OperationCanceledException();
+		}
+		
 		await _notificationService.ProcessAsync(
-			context.Message);
+			context.Message, ct);
 	}
 }

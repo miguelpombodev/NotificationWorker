@@ -4,5 +4,5 @@ namespace NotificationWorker.Application.Contracts;
 
 public interface IEmailDispatcher
 {
-    Task SendAsync(EmailToBeSend emailToBeSend);
+    Task SendAsync(EmailToBeSend emailToBeSend, CancellationToken ct);
 }

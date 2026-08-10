@@ -6,5 +6,5 @@ namespace NotificationWorker.Application.Contracts;
 public interface INotificationHandler
 {
     NotificationChannel Channel { get; }
-    Task HandleAsync(NotificationRequested notification);
+    Task HandleAsync(NotificationRequested notification, CancellationToken ct);
 }

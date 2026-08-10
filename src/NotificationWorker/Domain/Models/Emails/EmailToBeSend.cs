@@ -6,7 +6,7 @@ namespace NotificationWorker.Domain.Models.Emails;
 
 public class EmailToBeSend : Message
 {
-    public IReadOnlyList<string> To { get; init; } = [];
+    public string To { get; init; } = string.Empty;
     public IReadOnlyList<string> Cc { get; init; } = [];
     public IReadOnlyList<string> Bcc { get; init; } = [];
     public IReadOnlyList<Attachment> Attachments { get; set; } = [];

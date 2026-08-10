@@ -8,7 +8,7 @@ public class SmsHandler(ISmsDispatcher dispatcher) : INotificationHandler
 {
     public NotificationChannel Channel => NotificationChannel.Sms;
 
-    public Task HandleAsync(NotificationRequested notification)
+    public Task HandleAsync(NotificationRequested notification, CancellationToken ct)
     {
         return dispatcher.SendAsync(notification);
     }

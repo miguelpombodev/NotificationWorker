@@ -10,89 +10,108 @@ namespace NotificationWorker.Tests.Application.Services;
 
 public class EmailDispatcherTests
 {
-    private readonly Mock<ILogger<EmailDispatcher>> _logger = new();
-    private readonly Mock<IEmailQueuePublisher> _publisher = new();
+	private readonly Mock<ILogger> _logger = new();
 
-    private EmailDispatcher CreateSut() =>
-        new(_logger.Object, _publisher.Object);
+	private readonly Mock<IEmailQueuePublisher> _publisher = new();
 
-    [Fact]
-    public async Task SendAsync_WhenPublishSucceeds_ShouldPublishOnce()
-    {
-        // Arrange
-        var email = BuildEmail();
+	private EmailDispatcher CreateSut() =>
+		new(_publisher.Object);
 
-        _publisher
-            .Setup(p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
+	[Fact]
+	public async Task SendAsync_WhenPublishSucceeds_ShouldPublishOnce()
+	{
+		// Arrange
+		var email = BuildEmail();
 
-        var sut = CreateSut();
+		_publisher
+			.Setup(p => p.PublishAsync(
+				It.IsAny<EmailToBeSend>(),
+				It.IsAny<CancellationToken>()))
+			.Returns(Task.CompletedTask);
 
-        // Act
-        await sut.SendAsync(email);
+		var sut = CreateSut();
 
-        // Assert
-        _publisher.Verify(
-            p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()),
-            Times.Once);
-    }
+		// Act
+		await sut.SendAsync(email, It.IsAny<CancellationToken>());
 
-    [Fact]
-    public async Task SendAsync_WhenPublishThrowsTransientError_ShouldRetry()
-    {
-        // Arrange
-        var email = BuildEmail();
-        var callCount = 0;
+		// Assert
+		_publisher.Verify(
+			p => p.PublishAsync(
+				It.IsAny<EmailToBeSend>(),
+				It.IsAny<CancellationToken>()),
+			Times.Once);
+	}
 
-        _publisher
-            .Setup(p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()))
-            .Returns(() =>
-            {
-                callCount++;
-                // falha nas duas primeiras tentativas, sucesso na terceira
-                return callCount < 3
-                    ? Task.FromException(new HttpRequestException("connection refused"))
-                    : Task.CompletedTask;
-            });
+	[Fact]
+	public async Task SendAsync_WhenPublishThrowsTransientError_ShouldRetry()
+	{
+		// Arrange
+		var email = BuildEmail();
+		var callCount = 0;
 
-        var sut = CreateSut();
+		_publisher
+			.Setup(p => p.PublishAsync(
+				It.IsAny<EmailToBeSend>(),
+				It.IsAny<CancellationToken>()))
+			.Returns(() =>
+			{
+				callCount++;
 
-        // Act
-        await sut.SendAsync(email);
+				return callCount < 3
+					? Task.FromException(
+						new HttpRequestException("connection refused"))
+					: Task.CompletedTask;
+			});
 
-        // Assert
-        _publisher.Verify(
-            p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()),
-            Times.Exactly(3));
-    }
+		var sut = CreateSut();
 
-    [Fact]
-    public async Task SendAsync_WhenPublishThrowsNonRetriableError_ShouldNotRetry()
-    {
-        // Arrange
-        var email = BuildEmail();
+		// Act
+		await sut.SendAsync(email, It.IsAny<CancellationToken>());
 
-        _publisher
-            .Setup(p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new InvalidOperationException("invalid state"));
+		// Assert
+		_publisher.Verify(
+			p => p.PublishAsync(
+				It.IsAny<EmailToBeSend>(),
+				It.IsAny<CancellationToken>()),
+			Times.Exactly(3));
+	}
 
-        var sut = CreateSut();
+	[Fact]
+	public async Task SendAsync_WhenPublishThrowsNonRetriableError_ShouldNotRetry()
+	{
+		// Arrange
+		var email = BuildEmail();
 
-        // Act
-        var act = async () => await sut.SendAsync(email);
+		_publisher
+			.Setup(p => p.PublishAsync(
+				It.IsAny<EmailToBeSend>(),
+				It.IsAny<CancellationToken>()))
+			.ThrowsAsync(
+				new InvalidOperationException("invalid state"));
 
-        // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>();
+		var sut = CreateSut();
 
-        _publisher.Verify(
-            p => p.PublishAsync(It.IsAny<EmailToBeSend>(), It.IsAny<CancellationToken>()),
-            Times.Once);
-    }
+		// Act
+		var act = () => sut.SendAsync(email, It.IsAny<CancellationToken>());
 
-    private static EmailToBeSend BuildEmail() => new()
-    {
-        To = ["test@test.com"],
-        Subject = "Test subject",
-        Body = "<p>Hello</p>"
-    };
+		// Assert
+		await act.Should()
+			.ThrowAsync<InvalidOperationException>();
+
+		_publisher.Verify(
+			p => p.PublishAsync(
+				It.IsAny<EmailToBeSend>(),
+				It.IsAny<CancellationToken>()),
+			Times.Once);
+	}
+
+	private static EmailToBeSend BuildEmail() => new()
+	{
+		To = "test@test.com",
+		Subject = "Test subject",
+		Body = "<p>Hello</p>",
+		Cc = [],
+		Bcc = [],
+		Attachments = []
+	};
 }

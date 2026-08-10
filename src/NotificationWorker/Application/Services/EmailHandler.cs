@@ -15,7 +15,7 @@ public class EmailHandler(
     public NotificationChannel Channel => NotificationChannel.Email;
 
 
-    public async Task HandleAsync(NotificationRequested notification)
+    public async Task HandleAsync(NotificationRequested notification, CancellationToken ct)
     {
         var model = MapTemplate(notification);
         var body = await templateRenderer.RenderAsync(notification.Project, notification.Template,
@@ -23,7 +23,7 @@ public class EmailHandler(
 
         var emailBuilt = BuildMessage(notification, body);
 
-        await dispatcher.SendAsync(emailBuilt);
+        await dispatcher.SendAsync(emailBuilt, ct);
     }
 
     private EmailToBeSend BuildMessage(NotificationRequested notification, string body)
@@ -58,7 +58,7 @@ public class EmailHandler(
 
         return new EmailToBeSend
         {
-            To = [notification.Recipient],
+            To = notification.Recipient,
             Cc = cc,
             Bcc = bcc,
             Attachments = attachments,
