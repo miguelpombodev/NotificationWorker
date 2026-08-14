@@ -17,10 +17,10 @@ public class EmailToBeSendContract : IEmailToBeSend
 
 	public bool IsBodyHtml { get; init; } = true;
 
-	public List<EmailAttachment> Attachments { get; init; } = [];
+	public List<IEmailAttachment> Attachments { get; init; } = [];
 }
 
-public record EmailAttachment
+public record EmailAttachment : IEmailAttachment
 {
 	public string FileName { get; init; } = string.Empty;
 

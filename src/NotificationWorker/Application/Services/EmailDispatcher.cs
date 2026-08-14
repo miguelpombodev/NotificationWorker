@@ -1,3 +1,4 @@
+using Cloudmart.Contracts.Messaging.Emails;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Contracts;
 using NotificationWorker.Domain.Models.Emails;
@@ -21,7 +22,7 @@ public class EmailDispatcher(
 			Body = emailToBeSend.Body,
 			IsBodyHtml = true,
 			Attachments = emailToBeSend.Attachments
-				.Select(x => new EmailAttachment
+				.Select(x => (IEmailAttachment)new EmailAttachment
 				{
 					FileName = x.FileName,
 					ContentType = x.ContentType,
