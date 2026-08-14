@@ -1,6 +1,7 @@
 
 
 using CloudMart.Messaging.Contracts;
+using NotificationWorker.Domain.Contracts;
 
 namespace NotificationWorker.Application.Contracts;
 

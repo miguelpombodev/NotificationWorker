@@ -1,6 +1,8 @@
-namespace CloudMart.Messaging.Contracts;
+using Cloudmart.Contracts.Messaging.Emails;
 
-public class EmailToBeSendContract
+namespace NotificationWorker.Domain.Contracts;
+
+public class EmailToBeSendContract : IEmailToBeSend
 {
 	public Guid Id { get; set; }
 	public string To { get; init; } = string.Empty;

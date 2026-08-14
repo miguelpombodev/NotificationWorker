@@ -35,6 +35,15 @@
           }
         }
       },
+      "Cloudmart.Contracts/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/Cloudmart.Contracts.dll": {}
+        },
+        "runtime": {
+          "lib/net9.0/Cloudmart.Contracts.dll": {}
+        }
+      },
       "coverlet.collector/6.0.4": {
         "type": "package",
         "build": {
@@ -1772,7 +1781,8 @@
           "Serilog.Extensions.Hosting": "10.0.0",
           "Serilog.Extensions.Logging": "10.0.0",
           "Serilog.Sinks.Console": "6.1.1",
-          "Serilog.Sinks.OpenTelemetry": "4.2.0"
+          "Serilog.Sinks.OpenTelemetry": "4.2.0",
+          "cloudmart.contracts": "1.0.0"
         },
         "compile": {
           "bin/placeholder/NotificationWorker.dll": {}
@@ -1823,6 +1833,17 @@
         "lib/netstandard2.1/Castle.Core.dll",
         "lib/netstandard2.1/Castle.Core.xml",
         "readme.txt"
+      ]
+    },
+    "Cloudmart.Contracts/1.0.0": {
+      "sha512": "Vv+4VcDZVf5j3kYHdLdALRpLeoLjs8btGZvACu7ZC40KdZfctIiXq+ImC6ZADTJBxKG6B6Yb+Kq/50pWarjq0A==",
+      "type": "package",
+      "path": "cloudmart.contracts/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        "cloudmart.contracts.1.0.0.nupkg.sha512",
+        "cloudmart.contracts.nuspec",
+        "lib/net9.0/Cloudmart.Contracts.dll"
       ]
     },
     "coverlet.collector/6.0.4": {
@@ -4361,7 +4382,8 @@
       ],
       "sources": {
         "/usr/lib/dotnet/library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.pkg.github.com/miguelpombodev/index.json": {}
       },
       "frameworks": {
         "net10.0": {

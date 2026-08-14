@@ -1,7 +1,7 @@
-using CloudMart.Messaging.Contracts;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using NotificationWorker.Application.Contracts;
+using NotificationWorker.Domain.Contracts;
 using NotificationWorker.Domain.Models.Providers;
 
 namespace NotificationWorker.Infrastructure;
