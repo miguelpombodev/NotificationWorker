@@ -1,16 +1,4 @@
 ﻿services:
-#  notificationworker:
-#    image: notificationworker
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    depends_on:
-#      rabbitmq:
-#        condition: service_completed_successfully
-#      email_sender:
-#        condition: service_completed_successfully
-#    networks:
-#      - notification_net
   rabbitmq:
     image: rabbitmq:4-management
     container_name: notification_rabbit_mq

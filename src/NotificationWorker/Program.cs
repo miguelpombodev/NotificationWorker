@@ -1,32 +1,25 @@
 using NotificationWorker.Application.Extensions;
+using NotificationWorker.Domain;
 using NotificationWorker.Domain.Models.Providers;
 using NotificationWorker.Infrastructure.Extensions;
 using Serilog;
 
-var builder = Host.CreateApplicationBuilder(args);
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-var otelEndpoint = builder.Configuration["OpenTelemetry:Endpoint"]
-                   ?? "http://localhost:4317";
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .WriteTo.Console()
-    .CreateBootstrapLogger();
+	.MinimumLevel.Information()
+	.WriteTo.Console()
+	.CreateBootstrapLogger();
 
-builder.Services.AddSerilogService(builder.Environment.EnvironmentName, otelEndpoint);
+IConfiguration configuration = builder.Configuration;
 
-
-builder.Services.AddOptions<RabbitMqOptions>().Bind(
-        builder.Configuration.GetSection("RabbitMq")
-    )
-    .ValidateDataAnnotations()
-    .ValidateOnStart();
-
-builder.Services.AddOpenTelemetryService(otelEndpoint);
-
-builder.Services.AddMassTransitService();
-
-builder.Services.AddDependencyInjections();
-builder.Services.AddAllHealthChecks();
+builder.Services
+	.AddModels(configuration)
+	.AddSerilogService()
+	.AddOpenTelemetryService(configuration)
+	.AddMassTransitService()
+	.AddDependencyInjections()
+	.AddAllHealthChecks();
 
 await builder.Build().RunAsync();

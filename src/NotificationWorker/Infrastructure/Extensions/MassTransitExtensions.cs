@@ -12,6 +12,7 @@ public static class MassTransitExtensions
 	{
 		services.AddMassTransit(x =>
 		{
+			x.SetKebabCaseEndpointNameFormatter();
 			x.AddConsumer<NotificationRequestedConsumer>();
 
 			x.UsingRabbitMq((ctx, cfg) =>

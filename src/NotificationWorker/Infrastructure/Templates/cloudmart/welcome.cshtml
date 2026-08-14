@@ -1,0 +1,669 @@
+@model NotificationWorker.Infrastructure.Templates.TemplatesModels.WelcomeTemplateBase
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Bem-vindo à CloudMart</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #e9c09f;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #171717;
+        }
+
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 0;
+        }
+
+        img {
+            border: 0;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            background-color: #e9c09f;
+            padding: 30px 15px;
+        }
+
+        .email-container {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            background-color: #f8f6f2;
+        }
+
+        .topbar {
+            background-color: #111111;
+            color: #ffffff;
+            padding: 9px 18px;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            padding: 20px 30px;
+        }
+
+        .brand {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+            color: #171717;
+        }
+
+        .brand-mark {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            line-height: 22px;
+            margin-right: 7px;
+            background-color: #171717;
+            color: #ffffff;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .nav-text {
+            text-align: right;
+            color: #666666;
+            font-size: 11px;
+        }
+
+        .hero {
+            background-color: #f4eee7;
+            padding: 45px 35px 40px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background-color: #171717;
+            color: #ffffff;
+            padding: 6px 11px;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            margin: 0;
+            color: #171717;
+            font-size: 54px;
+            line-height: 0.95;
+            font-weight: 900;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+        }
+
+        .hero-title-accent {
+            display: block;
+            font-size: 58px;
+        }
+
+        .hero-description {
+            max-width: 450px;
+            margin: 22px auto 0;
+            color: #555555;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .hero-button {
+            display: inline-block;
+            margin-top: 28px;
+            padding: 14px 27px;
+            background-color: #f15a24;
+            color: #ffffff !important;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        .hero-button:hover {
+            background-color: #d94d1b;
+        }
+
+        .feature-section {
+            background-color: #111111;
+            padding: 35px 30px;
+        }
+
+        .feature-label {
+            color: #f15a24;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .feature-title {
+            color: #ffffff;
+            font-size: 30px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin: 8px 0 25px;
+        }
+
+        .feature-card {
+            background-color: #f8f6f2;
+            padding: 22px;
+        }
+
+        .feature-number {
+            color: #f15a24;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .feature-card-title {
+            margin: 10px 0 8px;
+            color: #171717;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .feature-card-text {
+            margin: 0;
+            color: #666666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .info-section {
+            background-color: #ffffff;
+            padding: 38px 30px;
+        }
+
+        .section-label {
+            color: #f15a24;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            margin: 8px 0 22px;
+            color: #171717;
+            font-size: 29px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .info-box {
+            background-color: #f4f1ed;
+            border-left: 4px solid #f15a24;
+            padding: 18px 20px;
+        }
+
+        .info-label {
+            color: #888888;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            margin-top: 5px;
+            color: #171717;
+            font-size: 14px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .steps-section {
+            background-color: #f4eee7;
+            padding: 38px 30px;
+        }
+
+        .step {
+            padding: 15px 0;
+            border-bottom: 1px solid #ded7cf;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            background-color: #171717;
+            color: #ffffff;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .step-title {
+            color: #171717;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .step-description {
+            color: #666666;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .cta-section {
+            background-color: #171717;
+            padding: 42px 30px;
+            text-align: center;
+        }
+
+        .cta-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: 32px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .cta-description {
+            max-width: 430px;
+            margin: 15px auto 0;
+            color: #bbbbbb;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 15px 32px;
+            background-color: #f15a24;
+            color: #ffffff !important;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+        }
+
+        .footer {
+            background-color: #ffffff;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .footer-brand {
+            color: #171717;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .footer-text {
+            margin: 10px 0 0;
+            color: #999999;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .footer-email {
+            color: #666666;
+            font-size: 10px;
+        }
+
+        @@media only screen and (max-width: 600px) {
+            .email-wrapper {
+                padding: 0;
+            }
+
+            .hero {
+                padding: 35px 20px;
+            }
+
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-title-accent {
+                font-size: 44px;
+            }
+
+            .feature-section,
+            .info-section,
+            .steps-section,
+            .cta-section {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<table class="email-wrapper" width="100%" role="presentation">
+    <tr>
+        <td align="center">
+
+            <table class="email-container" width="680" role="presentation">
+
+                <!-- TOP BAR -->
+                <tr>
+                    <td class="topbar">
+                        CLOUDMART &nbsp;•&nbsp; WELCOME EXPERIENCE
+                    </td>
+                </tr>
+
+                <!-- NAVBAR -->
+                <tr>
+                    <td class="navbar">
+                        <table width="100%" role="presentation">
+                            <tr>
+                                <td>
+                                    <span class="brand-mark">C</span>
+                                    <span class="brand">cloudmart</span>
+                                </td>
+
+                                <td class="nav-text">
+                                    YOUR DIGITAL EXPERIENCE
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- HERO -->
+                <tr>
+                    <td class="hero">
+
+                        <div class="eyebrow">
+                            Welcome to CloudMart
+                        </div>
+
+                        <h1 class="hero-title">
+                            WELCOME
+                            <span class="hero-title-accent">
+                                @Model.Name
+                            </span>
+                        </h1>
+
+                        <p class="hero-description">
+                            Sua conta está pronta.
+                            Agora você faz parte da CloudMart e já pode
+                            começar a explorar tudo o que preparamos para você.
+                        </p>
+
+                        <a href="@Model.LoginUrl"
+                           class="hero-button">
+                            Acessar minha conta
+                        </a>
+
+                    </td>
+                </tr>
+
+                <!-- FEATURE / DARK EDITORIAL SECTION -->
+                <tr>
+                    <td class="feature-section">
+
+                        <div class="feature-label">
+                            YOUR CLOUDMART EXPERIENCE
+                        </div>
+
+                        <div class="feature-title">
+                            Tudo pronto.<br />
+                            É hora de começar.
+                        </div>
+
+                        <table width="100%" role="presentation">
+                            <tr>
+                                <td class="feature-card">
+
+                                    <div class="feature-number">
+                                        01 / CLOUD
+                                    </div>
+
+                                    <div class="feature-card-title">
+                                        Simples
+                                    </div>
+
+                                    <p class="feature-card-text">
+                                        Uma experiência construída para que
+                                        você encontre o que precisa rapidamente,
+                                        sem complexidade desnecessária.
+                                    </p>
+
+                                </td>
+
+                                <td width="15"></td>
+
+                                <td class="feature-card">
+
+                                    <div class="feature-number">
+                                        02 / MART
+                                    </div>
+
+                                    <div class="feature-card-title">
+                                        Conectado
+                                    </div>
+
+                                    <p class="feature-card-text">
+                                        Tenha acesso ao ecossistema CloudMart
+                                        e às ferramentas necessárias para
+                                        transformar suas ideias em resultados.
+                                    </p>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- ACCOUNT INFORMATION -->
+                <tr>
+                    <td class="info-section">
+
+                        <div class="section-label">
+                            ACCOUNT DETAILS
+                        </div>
+
+                        <div class="section-title">
+                            Seu acesso
+                        </div>
+
+                        <table width="100%" role="presentation">
+
+                            <tr>
+                                <td class="info-box">
+
+                                    <div class="info-label">
+                                        Nome
+                                    </div>
+
+                                    <div class="info-value">
+                                        @Model.Name
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td height="12"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="info-box">
+
+                                    <div class="info-label">
+                                        E-mail
+                                    </div>
+
+                                    <div class="info-value">
+                                        @Model.Email
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- STEPS -->
+                <tr>
+                    <td class="steps-section">
+
+                        <div class="section-label">
+                            GET STARTED
+                        </div>
+
+                        <div class="section-title">
+                            Comece em<br />3 passos
+                        </div>
+
+                        <table width="100%" role="presentation">
+
+                            <tr>
+                                <td width="48" valign="top">
+                                    <div class="step-number">
+                                        01
+                                    </div>
+                                </td>
+
+                                <td class="step">
+                                    <div class="step-title">
+                                        Acesse sua conta
+                                    </div>
+
+                                    <div class="step-description">
+                                        Utilize o botão abaixo para entrar
+                                        na plataforma CloudMart.
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="48" valign="top">
+                                    <div class="step-number">
+                                        02
+                                    </div>
+
+                                </td>
+
+                                <td class="step">
+                                    <div class="step-title">
+                                        Complete seu perfil
+                                    </div>
+
+                                    <div class="step-description">
+                                        Adicione suas informações e personalize
+                                        sua experiência.
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="48" valign="top">
+                                    <div class="step-number">
+                                        03
+                                    </div>
+                                </td>
+
+                                <td class="step">
+                                    <div class="step-title">
+                                        Explore a CloudMart
+                                    </div>
+
+                                    <div class="step-description">
+                                        Descubra os recursos disponíveis
+                                        para você.
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- FINAL CTA -->
+                <tr>
+                    <td class="cta-section">
+
+                        <h2 class="cta-title">
+                            Pronto para começar?
+                        </h2>
+
+                        <p class="cta-description">
+                            Sua conta já está disponível.
+                            Acesse agora e comece sua experiência
+                            na CloudMart.
+                        </p>
+
+                        <a href="@Model.LoginUrl"
+                           class="cta-button">
+                            Entrar na CloudMart
+                        </a>
+
+                    </td>
+                </tr>
+
+                <!-- FOOTER -->
+                <tr>
+                    <td class="footer">
+
+                        <div class="footer-brand">
+                            cloudmart
+                        </div>
+
+                        <p class="footer-text">
+                            Este é um e-mail automático de boas-vindas.
+                            Você recebeu esta mensagem porque uma conta
+                            foi criada para você.
+                        </p>
+
+                        <div class="footer-email">
+                            @Model.Email
+                        </div>
+
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

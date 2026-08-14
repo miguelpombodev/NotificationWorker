@@ -8,11 +8,11 @@ namespace NotificationWorker.Infrastructure;
 
 public sealed class EmailQueuePublisher(
 	ISendEndpointProvider sendEndpointProvider,
-	IOptions<RabbitMqOptions> options,
+	IOptions<EmailSender> options,
 	ILogger<EmailQueuePublisher> logger)
 	: IEmailQueuePublisher
 {
-	private readonly RabbitMqOptions _options = options.Value;
+	private readonly EmailSender _options = options.Value;
 
 	public async Task PublishAsync(
 		EmailToBeSendContract email,
@@ -21,7 +21,7 @@ public sealed class EmailQueuePublisher(
 		ArgumentNullException.ThrowIfNull(email);
 
 		var endpoint = await sendEndpointProvider.GetSendEndpoint(
-			new Uri($"queue:{_options.EmailSenderQueueName}"));
+			new Uri($"queue:{_options.QueueName}"));
 
 		await endpoint.Send(
 			email,

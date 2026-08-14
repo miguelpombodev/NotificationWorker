@@ -5,17 +5,18 @@ services:
     env_file:
       - ./.env
     environment:
-      - Smtp__Host=sandbox.smtp.mailtrap.io
-      - Smtp__Port=465
-      - Smtp__User=${SMTP_USER}
-      - Smtp__Password=${SMTP_PASSWORD}
-      - Smtp__FromEmail=no-respond@teammanager-bot.com
-      - Smtp__FromName="Team Manager"
-      - RabbitMq__HostName=rabbitmq
-      - RabbitMq__Port=5672
-      - RabbitMq__UserName=${RABBITMQ_USER}
-      - RabbitMq__Password=${RABBITMQ_PASSWORD}
-      - RabbitMq__QueueName=sub-email-sender
-      - RabbitMq__ExchangeName=sub-email-sender-exchange
-      - RabbitMq__RoutingKeyName=sub-email
-      - MT_LICENSE=${MT_LICENSE}
+      Smtp__Host: ${SMTP_HOST}
+      Smtp__Port: ${SMTP_PORT}
+      Smtp__User: ${SMTP_USER}
+      Smtp__Password: ${SMTP_PASSWORD}
+      Smtp__FromEmail: ${SMTP_FROM_EMAIL}
+      Smtp__FromName: ${SMTP_FROM_NAME}
+      RabbitMq__HostName: rabbitmq
+      RabbitMq__Port: ${RABBITMQ_PORT}
+      RabbitMq__UserName: ${RABBITMQ_USER}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD}
+      RabbitMq__QueueName: ${RABBITMQ_NOTIFICATION_EMAIL_SENDER_QUEUE_NAME}
+      RabbitMq__VirtualHost: ${RABBITMQ_NOTIFICATION_EMAIL_SENDER_VIRTUAL_HOST}
+      RabbitMq__PrefetchCount: ${RABBITMQ_NOTIFICATION_EMAIL_SENDER_PREFECTH_COUNT}
+      RabbitMq__QueueMessageTtl: ${RABBITMQ_NOTIFICATION_EMAIL_SENDER_MESSAGE_TTL}
+      RabbitMq__DeadLetterExchangeName: ${RABBITMQ_NOTIFICATION_EMAIL_SENDER_DEAD_LETTER_EXCHANGE}
