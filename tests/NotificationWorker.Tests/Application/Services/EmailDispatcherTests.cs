@@ -1,4 +1,3 @@
-using CloudMart.Messaging.Contracts;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
