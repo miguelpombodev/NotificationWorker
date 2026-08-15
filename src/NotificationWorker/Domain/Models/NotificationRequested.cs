@@ -1,8 +1,9 @@
-using NotificationWorker.Domain.Enums;
+using Cloudmart.Contracts.Messaging.Enums;
+using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 
 namespace NotificationWorker.Domain.Models;
 
-public sealed class NotificationRequested
+public sealed class NotificationRequested : INotificationRequest
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
 

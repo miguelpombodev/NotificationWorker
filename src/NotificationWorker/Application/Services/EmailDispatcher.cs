@@ -1,4 +1,4 @@
-using Cloudmart.Contracts.Messaging.Emails;
+using Cloudmart.Contracts.Messaging.Interfaces.Emails;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Contracts;
 using NotificationWorker.Domain.Models.Emails;

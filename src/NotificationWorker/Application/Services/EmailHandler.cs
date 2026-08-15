@@ -1,5 +1,5 @@
+using Cloudmart.Contracts.Messaging.Enums;
 using NotificationWorker.Application.Contracts;
-using NotificationWorker.Domain.Enums;
 using NotificationWorker.Domain.Models;
 using NotificationWorker.Domain.Models.Emails;
 using NotificationWorker.Infrastructure.Templates.TemplatesModels;

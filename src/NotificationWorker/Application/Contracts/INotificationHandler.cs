@@ -1,4 +1,4 @@
-using NotificationWorker.Domain.Enums;
+using Cloudmart.Contracts.Messaging.Enums;
 using NotificationWorker.Domain.Models;
 
 namespace NotificationWorker.Application.Contracts;
