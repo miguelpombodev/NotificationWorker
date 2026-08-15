@@ -35,7 +35,7 @@
           }
         }
       },
-      "Cloudmart.Contracts/1.0.0": {
+      "Cloudmart.Contracts/1.0.2": {
         "type": "package",
         "compile": {
           "lib/net9.0/Cloudmart.Contracts.dll": {}
@@ -1782,7 +1782,7 @@
           "Serilog.Extensions.Logging": "10.0.0",
           "Serilog.Sinks.Console": "6.1.1",
           "Serilog.Sinks.OpenTelemetry": "4.2.0",
-          "cloudmart.contracts": "1.0.0"
+          "cloudmart.contracts": "1.0.2"
         },
         "compile": {
           "bin/placeholder/NotificationWorker.dll": {}
@@ -1835,13 +1835,13 @@
         "readme.txt"
       ]
     },
-    "Cloudmart.Contracts/1.0.0": {
-      "sha512": "Vv+4VcDZVf5j3kYHdLdALRpLeoLjs8btGZvACu7ZC40KdZfctIiXq+ImC6ZADTJBxKG6B6Yb+Kq/50pWarjq0A==",
+    "Cloudmart.Contracts/1.0.2": {
+      "sha512": "ST0QJfZEhuXy2vv+aN3MtQttEn6HEYmbMbxEmTsq87ujIfL68CdZxP7U6o03FbD1ScJRjyuILN3wn3DZUM1EhA==",
       "type": "package",
-      "path": "cloudmart.contracts/1.0.0",
+      "path": "cloudmart.contracts/1.0.2",
       "files": [
         ".nupkg.metadata",
-        "cloudmart.contracts.1.0.0.nupkg.sha512",
+        "cloudmart.contracts.1.0.2.nupkg.sha512",
         "cloudmart.contracts.nuspec",
         "lib/net9.0/Cloudmart.Contracts.dll"
       ]
