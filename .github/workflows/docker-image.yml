@@ -29,6 +29,15 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        
+      -
+        name: Test GitHub Packages authentication
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -i \
+            -u "${{ github.actor }}:${GITHUB_TOKEN}" \
+            https://nuget.pkg.github.com/miguelpombodev/download/cloudmart.contracts/index.json
     
       -
         name: Build and Push Docker Image
