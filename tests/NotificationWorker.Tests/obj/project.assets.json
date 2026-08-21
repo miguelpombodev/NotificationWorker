@@ -4350,7 +4350,6 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj",
       "FluentAssertions >= 8.9.0",
       "Microsoft.Extensions.DependencyInjection >= 10.0.5",
       "Microsoft.Extensions.Hosting >= 10.0.5",
@@ -4375,6 +4374,7 @@
       "outputPath": "/home/pombo/Dev/C#/NotificationWorker/tests/NotificationWorker.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
+        "/home/pombo/Dev/C#/NotificationWorker/nuget.config",
         "/home/pombo/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
@@ -4387,12 +4387,8 @@
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj": {
-              "projectPath": "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj"
-            },
             "/home/pombo/Dev/C#/NotificationWorker/src/NotificationWorker/NotificationWorker.csproj": {
               "projectPath": "/home/pombo/Dev/C#/NotificationWorker/src/NotificationWorker/NotificationWorker.csproj"
             }
@@ -4413,7 +4409,6 @@
     },
     "frameworks": {
       "net10.0": {
-        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "FluentAssertions": {
@@ -4467,7 +4462,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.110/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.111/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -4746,15 +4741,6 @@
     }
   },
   "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project '/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "/home/pombo/Dev/C#/NotificationWorker/NotificationWorker.csproj",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
     {
       "code": "NU1902",
       "level": "Warning",

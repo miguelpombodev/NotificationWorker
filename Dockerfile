@@ -4,19 +4,22 @@ ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
 
+COPY nuget.config .
 COPY src/NotificationWorker/NotificationWorker.csproj src/NotificationWorker/
 
-RUN --mount=type=cache,target=/root/.nuget/packages \
-    dotnet restore src/NotificationWorker/NotificationWorker.csproj --verbosity normal
+RUN --mount=type=secret,id=github_token \
+    --mount=type=cache,target=/root/.nuget/packages \
+    GITHUB_TOKEN=$(cat /run/secrets/github_token) \
+    dotnet restore src/NotificationWorker/NotificationWorker.csproj --verbosity normal \
+      --configfile nuget.config 
 
 COPY src/ src/
 
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet publish src/NotificationWorker/NotificationWorker.csproj \
-    -c $BUILD_CONFIGURATION \
+    --configuration $BUILD_CONFIGURATION \
     -o /app/publish \
     /p:UseAppHost=false
-
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 
