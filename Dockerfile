@@ -7,9 +7,9 @@ WORKDIR /src
 COPY nuget.config .
 COPY src/NotificationWorker/NotificationWorker.csproj src/NotificationWorker/
 
-RUN --mount=type=secret,id=github_token \
+RUN --mount=type=secret,id=GITHUB_TOKEN \
     --mount=type=cache,target=/root/.nuget/packages \
-    export GITHUB_TOKEN="$(cat /run/secrets/github_token)" && \
+    export GITHUB_TOKEN="$(cat /run/secrets/GITHUB_TOKEN)" && \
     dotnet restore src/NotificationWorker/NotificationWorker.csproj  \
       --verbosity normal \
       --configfile nuget.config 
