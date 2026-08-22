@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using NotificationWorker.Domain.Models;
@@ -55,6 +56,8 @@ public static class MassTransitExtensions
 							maxInterval: TimeSpan.FromSeconds(30),
 							intervalDelta: TimeSpan.FromSeconds(5));
 					});
+					
+					e.Bind<INotificationRequest>();
 
 					e.ConfigureConsumer<NotificationRequestedConsumer>(ctx);
 				});
