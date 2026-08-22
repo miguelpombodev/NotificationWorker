@@ -19,6 +19,7 @@ COPY src/ src/
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet publish src/NotificationWorker/NotificationWorker.csproj \
     --configuration $BUILD_CONFIGURATION \
+    --no-restore \
     -o /app/publish \
     /p:UseAppHost=false
 

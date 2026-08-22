@@ -34,17 +34,7 @@ jobs:
             -u "${{ github.actor }}:${GITHUB_TOKEN}" \
             https://nuget.pkg.github.com/miguelpombodev/download/cloudmart.contracts/index.json
 
-      - name: Configure GitHub Packages
-        run: |
-          dotnet nuget add source \
-            --username ${{ github.actor }} \
-            --password ${{ secrets.GITHUB_TOKEN }} \
-            --store-password-in-clear-text \
-            --name github \
-            https://nuget.pkg.github.com/miguelpombodev/index.json
-      
-      -
-        name: Build and Push Docker Image
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
           context: .
