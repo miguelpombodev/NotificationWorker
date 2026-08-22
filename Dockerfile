@@ -10,18 +10,18 @@ COPY src/NotificationWorker/NotificationWorker.csproj src/NotificationWorker/
 RUN --mount=type=secret,id=GITHUB_TOKEN \
     --mount=type=cache,target=/root/.nuget/packages \
     export GITHUB_TOKEN="$(cat /run/secrets/GITHUB_TOKEN)" && \
-    dotnet restore src/NotificationWorker/NotificationWorker.csproj  \
+    dotnet restore src/NotificationWorker/NotificationWorker.csproj \
       --verbosity normal \
-      --configfile nuget.config 
+      --configfile nuget.config
 
 COPY src/ src/
 
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet publish src/NotificationWorker/NotificationWorker.csproj \
-    --configuration $BUILD_CONFIGURATION \
-    --no-restore \
-    -o /app/publish \
-    /p:UseAppHost=false
+      --configuration $BUILD_CONFIGURATION \
+      --no-restore \
+      -o /app/publish \
+      /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 
