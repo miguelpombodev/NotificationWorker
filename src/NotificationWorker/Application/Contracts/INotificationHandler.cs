@@ -1,10 +1,10 @@
 using Cloudmart.Contracts.Messaging.Enums;
-using NotificationWorker.Domain.Models;
+using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 
 namespace NotificationWorker.Application.Contracts;
 
 public interface INotificationHandler
 {
     NotificationChannel Channel { get; }
-    Task HandleAsync(NotificationRequested notification, CancellationToken ct);
+    Task HandleAsync(INotificationRequest notification, CancellationToken ct);
 }

@@ -1,3 +1,4 @@
+using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Models;
 
@@ -8,7 +9,7 @@ public class NotificationService(
     ILogger<NotificationService> logger)
     : INotificationService
 {
-    public async Task ProcessAsync(NotificationRequested notification, CancellationToken ct)
+    public async Task ProcessAsync(INotificationRequest notification, CancellationToken ct)
     {
         try
         {

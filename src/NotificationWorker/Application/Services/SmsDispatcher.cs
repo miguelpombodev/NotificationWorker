@@ -1,3 +1,4 @@
+using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Models;
 
@@ -5,7 +6,7 @@ namespace NotificationWorker.Application.Services;
 
 public class SmsDispatcher(ILogger<SmsDispatcher> logger) : ISmsDispatcher
 {
-    public async Task SendAsync(NotificationRequested notification)
+    public async Task SendAsync(INotificationRequest notification)
     {
         var phone = notification.Recipient;
         var message = notification.Data["message"]?.ToString();

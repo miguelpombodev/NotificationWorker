@@ -1,4 +1,5 @@
 using Cloudmart.Contracts.Messaging.Enums;
+using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Models;
 using NotificationWorker.Domain.Models.Emails;
@@ -15,7 +16,7 @@ public class EmailHandler(
 	public NotificationChannel Channel => NotificationChannel.Email;
 
 
-	public async Task HandleAsync(NotificationRequested notification, CancellationToken ct)
+	public async Task HandleAsync(INotificationRequest notification, CancellationToken ct)
 	{
 		var model = MapTemplate(notification);
 
@@ -27,7 +28,7 @@ public class EmailHandler(
 		await dispatcher.SendAsync(emailBuilt, ct);
 	}
 
-	private EmailToBeSend BuildMessage(NotificationRequested notification, string body)
+	private EmailToBeSend BuildMessage(INotificationRequest notification, string body)
 	{
 		if (!notification.Data.TryGetValue("subject", out var subjectValue))
 		{
@@ -122,7 +123,7 @@ public class EmailHandler(
 		return result;
 	}
 
-	private EmailPayload MapTemplate(NotificationRequested notification)
+	private EmailPayload MapTemplate(INotificationRequest notification)
 	{
 		return notification.Template switch
 		{

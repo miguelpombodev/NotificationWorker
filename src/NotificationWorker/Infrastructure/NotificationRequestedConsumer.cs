@@ -1,10 +1,11 @@
+using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 using MassTransit;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Models;
 
 namespace NotificationWorker.Infrastructure;
 
-public class NotificationRequestedConsumer : IConsumer<NotificationRequested>
+public class NotificationRequestedConsumer : IConsumer<INotificationRequest>
 {
 	private readonly INotificationService _notificationService;
 
@@ -15,7 +16,7 @@ public class NotificationRequestedConsumer : IConsumer<NotificationRequested>
 	}
 
 	public async Task Consume(
-		ConsumeContext<NotificationRequested> context)
+		ConsumeContext<INotificationRequest> context)
 	{
 		CancellationToken ct = context.CancellationToken;
 		
