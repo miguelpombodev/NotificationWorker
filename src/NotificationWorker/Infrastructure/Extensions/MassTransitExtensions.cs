@@ -14,7 +14,23 @@ public static class MassTransitExtensions
 		services.AddMassTransit(x =>
 		{
 			x.SetKebabCaseEndpointNameFormatter();
-			x.AddConsumer<NotificationRequestedConsumer>();
+			x.AddConsumer<NotificationRequestedConsumer>(cfg =>
+			{
+				cfg.UseMessageRetry(r =>
+				{
+					r.Ignore<DirectoryNotFoundException>();
+					r.Ignore<FileNotFoundException>();
+						
+					r.Handle<TimeoutException>();
+					r.Handle<HttpRequestException>();
+						
+					r.Exponential(
+						retryLimit: 5, 
+						minInterval: TimeSpan.FromSeconds(2),
+						maxInterval: TimeSpan.FromSeconds(30),
+						intervalDelta: TimeSpan.FromSeconds(5));
+				});
+			});
 
 			x.UsingRabbitMq((ctx, cfg) =>
 			{
@@ -35,27 +51,21 @@ public static class MassTransitExtensions
 						host.Username(rabbitOptions.UserName);
 						host.Password(rabbitOptions.Password);
 						host.RequestedConnectionTimeout(TimeSpan.FromSeconds(10));
+						host.Heartbeat(TimeSpan.FromSeconds(60));
 					});
 
 				cfg.ReceiveEndpoint(rabbitOptions.QueueName, e =>
 				{
+					e.Durable = true;
 					e.PrefetchCount = rabbitOptions.PrefetchCount;
 					e.ConcurrentMessageLimit = Math.Max(1, rabbitOptions.PrefetchCount / 2);
-
-					e.UseMessageRetry(r =>
-					{
-						r.Ignore<DirectoryNotFoundException>();
-						r.Ignore<FileNotFoundException>();
-						
-						r.Handle<TimeoutException>();
-						r.Handle<HttpRequestException>();
-						
-						r.Exponential(
-							retryLimit: 5, 
-							minInterval: TimeSpan.FromSeconds(2),
-							maxInterval: TimeSpan.FromSeconds(30),
-							intervalDelta: TimeSpan.FromSeconds(5));
-					});
+					
+					e.DeadLetterExchange = $"{rabbitOptions.QueueName}.dlx";
+					e.SetQueueArgument("x-max-length", 10000);
+					
+					e.UseRateLimit(
+						rateLimit: 10,
+						interval: TimeSpan.FromSeconds(1));
 					
 					e.Bind<INotificationRequest>();
 
