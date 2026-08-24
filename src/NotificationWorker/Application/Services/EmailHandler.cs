@@ -3,6 +3,7 @@ using Cloudmart.Contracts.Messaging.Interfaces.Notifications;
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Domain.Models;
 using NotificationWorker.Domain.Models.Emails;
+using NotificationWorker.Infrastructure.Templates;
 using NotificationWorker.Infrastructure.Templates.TemplatesModels;
 
 namespace NotificationWorker.Application.Services;
@@ -15,6 +16,7 @@ public class EmailHandler(
 {
 	public NotificationChannel Channel => NotificationChannel.Email;
 
+	private readonly IEnumerable<IProjectTemplateFactory> _templateFactories;
 
 	public async Task HandleAsync(INotificationRequest notification, CancellationToken ct)
 	{
@@ -117,6 +119,8 @@ public class EmailHandler(
 				logger.LogError(
 					"[ERROR] Error trying to convert ContentBase64 in bytes! Exception Message: {Message}; Exception StackTrace: {StackTrace}",
 					exc.Message, exc.StackTrace);
+
+				throw;
 			}
 		}
 
@@ -125,26 +129,21 @@ public class EmailHandler(
 
 	private EmailPayload MapTemplate(INotificationRequest notification)
 	{
-		return notification.Template switch
+		IProjectTemplateFactory? factory = _templateFactories.FirstOrDefault(x => x.Project.Equals(
+			notification.Project,
+			StringComparison.OrdinalIgnoreCase));
+
+		if (factory is null)
 		{
-			"welcome" => new EmailPayload(
-				Subject: notification.Data["subject"].ToString() ?? string.Empty,
-				TemplateName: notification.Template,
-				TemplateModel: new WelcomeTemplateBase(
-					notification.Data["name"]?.ToString() ?? string.Empty,
-					notification.Recipient,
-					notification.Data["loginUrl"]?.ToString() ?? string.Empty)
-			),
-			"welcome_role" => new EmailPayload(
-				Subject: notification.Data["subject"].ToString() ?? string.Empty,
-				TemplateName: notification.Template,
-				TemplateModel: new WelcomeTemplateWithRoleModel(
-					notification.Data["name"]?.ToString() ?? string.Empty,
-					notification.Recipient,
-					notification.Data["loginUrl"]?.ToString() ?? string.Empty,
-					notification.Data["role"]?.ToString() ?? string.Empty)
-			),
-			_ => throw new InvalidOperationException("Invalid template")
-		};
+			throw new InvalidOperationException(
+				$"No template factory registered for project '{notification.Project}'");
+		}
+
+		object templateModel = factory.Create(notification.Template, notification);
+
+		return new EmailPayload(
+			Subject: notification.Data["subject"].ToString() ?? string.Empty,
+			TemplateName: notification.Template,
+			TemplateModel: templateModel);
 	}
 }
