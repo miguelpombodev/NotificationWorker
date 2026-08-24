@@ -11,12 +11,11 @@ namespace NotificationWorker.Application.Services;
 public class EmailHandler(
 	IEmailDispatcher dispatcher,
 	ITemplateRenderer templateRenderer,
-	ILogger<EmailHandler> logger)
+	ILogger<EmailHandler> logger,
+	IEnumerable<IProjectTemplateFactory> templateFactories)
 	: INotificationHandler
 {
 	public NotificationChannel Channel => NotificationChannel.Email;
-
-	private readonly IEnumerable<IProjectTemplateFactory> _templateFactories;
 
 	public async Task HandleAsync(INotificationRequest notification, CancellationToken ct)
 	{
@@ -129,7 +128,7 @@ public class EmailHandler(
 
 	private EmailPayload MapTemplate(INotificationRequest notification)
 	{
-		IProjectTemplateFactory? factory = _templateFactories.FirstOrDefault(x => x.Project.Equals(
+		IProjectTemplateFactory? factory = templateFactories.FirstOrDefault(x => x.Project.Equals(
 			notification.Project,
 			StringComparison.OrdinalIgnoreCase));
 

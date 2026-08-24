@@ -1,21 +1,39 @@
 {
-  "messageId": "0198f8c4-7c9a-7b21-9e3c-123456789abc",
-  "conversationId": "0198f8c4-7c9a-7b21-9e3c-123456789abd",
-  "sourceAddress": "rabbitmq://localhost/test-producer",
-  "destinationAddress": "rabbitmq://localhost/notification-worker",
+  "messageId": "44920000-9cb3-0f0f-832c-08df01f72320",
+  "requestId": null,
+  "correlationId": null,
+  "conversationId": "44920000-9cb3-0f0f-5cd4-08df01f72329",
+  "initiatorId": null,
+  "sourceAddress": "rabbitmq://localhost/pombo_IdentityAPI_bus_e1jyyyrhsc8o6td6bdxod7a5rn?temporary=true",
+  "destinationAddress": "rabbitmq://localhost/Cloudmart.Contracts.Messaging.Interfaces.Notifications:INotificationRequest",
+  "responseAddress": null,
+  "faultAddress": null,
   "messageType": [
-    "urn:message:NotificationWorker.Domain.Models:NotificationRequested"
+    "urn:message:Cloudmart.Contracts.Messaging.Interfaces.Notifications:INotificationRequest"
   ],
   "message": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "channel": "Email",
+    "recipient": "miguel@test.com",
     "project": "cloudmart",
     "template": "welcome",
-    "recipient": "destinatario@example.com",
-    "channel": "Email",
     "data": {
-      "name": "João Silva",
-      "subject": "Bem-vindo à CloudMart!",
+      "name": "Miguel",
+      "subject": "Welcome to CloudMart!",
       "loginUrl": "https://cloudmart.example.com/login"
     }
   },
-  "sentTime": "2026-08-10T17:00:00Z"
+  "expirationTime": null,
+  "sentTime": "2026-08-24T15:48:26.7782956Z",
+  "headers": {},
+  "host": {
+    "machineName": "pombo",
+    "processName": "Identity.API",
+    "processId": 430660,
+    "assembly": "Identity.API",
+    "assemblyVersion": "1.0.0.0",
+    "frameworkVersion": "9.0.18",
+    "massTransitVersion": "9.2.1.0",
+    "operatingSystemVersion": "Unix 7.0.0.30"
+  }
 }

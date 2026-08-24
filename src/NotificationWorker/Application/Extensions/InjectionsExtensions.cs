@@ -1,6 +1,8 @@
 using NotificationWorker.Application.Contracts;
 using NotificationWorker.Application.Services;
 using NotificationWorker.Infrastructure;
+using NotificationWorker.Infrastructure.Templates;
+using NotificationWorker.Infrastructure.Templates.cloudmart;
 
 namespace NotificationWorker.Application.Extensions;
 
@@ -20,6 +22,8 @@ public static class InjectionsExtensions
         services.AddScoped<IEmailQueuePublisher, EmailQueuePublisher>();
 
         services.AddSingleton<ITemplateRenderer, RazorTemplateRenderer>();
+
+        services.AddScoped<IProjectTemplateFactory, CloudmartTemplateFactory>();
 
         return services;
     }
