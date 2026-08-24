@@ -1,6 +1,7 @@
 ﻿FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
 ARG BUILD_CONFIGURATION=Release
+ARG TARGETARCH
 
 WORKDIR /src
 
@@ -8,15 +9,14 @@ COPY nuget.config .
 COPY src/NotificationWorker/NotificationWorker.csproj src/NotificationWorker/
 
 RUN --mount=type=secret,id=GITHUB_TOKEN \
-    --mount=type=cache,target=/root/.nuget/packages \
+    --mount=type=cache,id=nuget-${TARGETARCH},target=/root/.nuget/packages \
     export GITHUB_TOKEN="$(cat /run/secrets/GITHUB_TOKEN)" && \
     dotnet restore src/NotificationWorker/NotificationWorker.csproj \
-      --verbosity normal \
       --configfile nuget.config
 
 COPY src/ src/
 
-RUN --mount=type=cache,target=/root/.nuget/packages \
+RUN --mount=type=cache,id=nuget-${TARGETARCH},target=/root/.nuget/packages \
     dotnet publish src/NotificationWorker/NotificationWorker.csproj \
       --configuration $BUILD_CONFIGURATION \
       --no-restore \
